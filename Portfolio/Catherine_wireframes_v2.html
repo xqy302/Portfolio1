@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catherine — Improved Wireframes v2</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.40.0/tabler-icons.min.css">
+<style>
+  :root {
+    --bg-page: #F4F4EF;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F4F4EF;
+    --bg-info: #E6F1FB;
+    --text-primary: #1F1F1E;
+    --text-secondary: #6B6B66;
+    --text-tertiary: #9B9A93;
+    --text-info: #0C447C;
+    --border-tertiary: rgba(0,0,0,0.10);
+    --border-secondary: rgba(0,0,0,0.18);
+    --border-info: #185FA5;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 24px;
+    font-family: var(--font);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+  h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+  h2 { font-size: 16px; font-weight: 500; margin: 48px 0 8px; }
+  .lead { color: var(--text-secondary); font-size: 14px; margin: 0 0 32px; max-width: 720px; }
+  .stage {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    max-width: 980px;
+    margin: 0 auto 16px;
+  }
+  .stage.center { display: flex; justify-content: center; }
+  button {
+    font-family: inherit; font-size: 12px;
+    padding: 5px 10px;
+    background: transparent;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--text-primary);
+  }
+  button.primary {
+    background: var(--bg-info);
+    color: var(--text-info);
+    border-color: var(--border-info);
+  }
+  ol { line-height: 1.65; }
+
+  /* desktop frame */
+  .desktop {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-tertiary);
+    overflow: hidden;
+    min-height: 600px;
+  }
+  .sidebar {
+    border-right: 0.5px solid var(--border-tertiary);
+    padding: 16px 12px;
+    background: var(--bg-secondary);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .sb-logo { display: flex; align-items: center; gap: 8px; padding: 6px 8px 16px; }
+  .sb-logo .mark { width: 24px; height: 24px; border-radius: 6px; background: var(--bg-info); display: flex; align-items: center; justify-content: center; }
+  .sb-logo .mark i { font-size: 14px; color: var(--text-info); }
+  .sb-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; font-size: 13px; color: var(--text-secondary); border-radius: var(--radius-md); }
+  .sb-item.active { background: var(--bg-primary); color: var(--text-primary); font-weight: 500; }
+  .sb-item i { font-size: 16px; }
+  .sb-bottom { margin-top: auto; border-top: 0.5px solid var(--border-tertiary); padding-top: 12px; display: flex; flex-direction: column; gap: 2px; }
+  .sb-bottom .sb-item { font-size: 12px; color: var(--text-tertiary); padding: 7px 10px; }
+
+  .chat { display: flex; flex-direction: column; }
+  .disclaimer {
+    display: flex; align-items: flex-start; gap: 8px;
+    margin: 16px 20px 0; padding: 10px 12px;
+    background: var(--bg-info);
+    border-radius: var(--radius-md);
+    font-size: 12px; color: var(--text-info); line-height: 1.55;
+  }
+  .disclaimer i { font-size: 16px; margin-top: 1px; }
+  .messages { flex: 1; padding: 20px 22px 6px; }
+  .msg { display: flex; gap: 10px; margin-bottom: 18px; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-info); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .avatar i { font-size: 14px; color: var(--text-info); }
+  .bubble-bot { max-width: 500px; font-size: 14px; line-height: 1.6; }
+  .bubble-bot p { margin: 0 0 4px; }
+  .bubble-bot p.sub { font-size: 13px; color: var(--text-secondary); margin: 0; }
+  .prompts { margin: 0 0 20px 38px; }
+  .prompts .label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 8px; }
+  .prompt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+  .prompt {
+    padding: 11px 13px;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    font-size: 13px; line-height: 1.4;
+    cursor: pointer; background: var(--bg-primary);
+  }
+  .prompt i { font-size: 14px; margin-right: 6px; color: var(--text-secondary); }
+  .user-row { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+  .user-bubble { max-width: 440px; background: var(--bg-secondary); padding: 10px 14px; border-radius: 14px 14px 4px 14px; font-size: 14px; line-height: 1.55; }
+  .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .footnote { margin: 14px 0 0; font-size: 12px; color: var(--text-tertiary); line-height: 1.55; }
+  .composer { padding: 14px 20px 18px; border-top: 0.5px solid var(--border-tertiary); }
+  .composer-row { display: flex; align-items: center; gap: 8px; border: 0.5px solid var(--border-secondary); border-radius: var(--radius-lg); padding: 8px 8px 8px 14px; background: var(--bg-primary); }
+  .composer-row .placeholder { flex: 1; font-size: 14px; color: var(--text-tertiary); }
+  .composer-row button { padding: 6px 10px; }
+  .composer-row i { font-size: 16px; }
+
+  /* mobile frame */
+  .phone {
+    width: 340px;
+    background: var(--bg-primary);
+    border-radius: 32px;
+    border: 0.5px solid var(--border-secondary);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    min-height: 680px;
+  }
+  .phone .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 0.5px solid var(--border-tertiary); }
+  .phone .topbar button { padding: 8px; border: none; min-width: 36px; min-height: 36px; }
+  .phone .topbar button i { font-size: 18px; }
+  .phone .brand { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; }
+  .phone .brand .mark { width: 22px; height: 22px; border-radius: 6px; background: var(--bg-info); display: flex; align-items: center; justify-content: center; }
+  .phone .brand .mark i { font-size: 13px; color: var(--text-info); }
+  .phone .disclaimer { margin: 10px 14px 0; font-size: 11px; padding: 8px 10px; }
+  .phone .messages { padding: 14px; }
+  .phone .msg { margin-bottom: 14px; gap: 8px; }
+  .phone .avatar { width: 24px; height: 24px; }
+  .phone .avatar i { font-size: 12px; }
+  .phone .bubble-bot { font-size: 13px; max-width: 260px; }
+  .phone .bubble-bot ol { margin: 0 0 8px 16px; padding: 0; font-size: 13px; line-height: 1.65; }
+  .phone .user-bubble { font-size: 13px; max-width: 240px; padding: 9px 12px; }
+  .phone .chip-row { display: flex; gap: 6px; overflow-x: auto; padding: 10px 14px 8px; border-top: 0.5px solid var(--border-tertiary); }
+  .phone .chip { white-space: nowrap; padding: 7px 12px; border: 0.5px solid var(--border-secondary); border-radius: 999px; font-size: 12px; flex-shrink: 0; background: var(--bg-primary); }
+  .phone .composer { padding: 0 14px 8px; border: none; }
+  .phone .composer-row { padding: 6px 6px 6px 12px; }
+  .phone .composer-row button { min-width: 38px; min-height: 38px; padding: 8px; }
+  .phone .composer-row i { font-size: 18px; }
+  .phone .tabbar { display: flex; justify-content: space-around; padding: 8px 0 14px; border-top: 0.5px solid var(--border-tertiary); }
+  .phone .tab { background: transparent; border: none; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 12px; color: var(--text-secondary); }
+  .phone .tab.active { color: var(--text-primary); font-weight: 500; }
+  .phone .tab i { font-size: 22px; }
+  .phone .tab span { font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div style="max-width:980px;margin:0 auto;">
+<h1>Catherine — Improved Wireframes v2</h1>
+<p class="lead">Key changes from 2022 wireframe: medical/AI disclaimer banner, consolidated welcome, suggested prompts as entry points, deliver-first response pattern with Save/Print/Email actions, voice input, and a one-tap Crisis path on mobile. Login wall removed from reasoning/explanations.</p>
+</div>
+
+<h2 style="max-width:980px;margin-left:auto;margin-right:auto;">Desktop</h2>
+<div class="stage">
+  <div class="desktop">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="mark"><i class="ti ti-sparkles"></i></div><span style="font-weight:500;font-size:14px;">Catherine</span></div>
+      <div class="sb-item active"><i class="ti ti-message"></i>New chat</div>
+      <div class="sb-item"><i class="ti ti-history"></i>History</div>
+      <div class="sb-item"><i class="ti ti-bookmark"></i>Saved</div>
+      <div class="sb-item"><i class="ti ti-book"></i>Resources</div>
+      <div class="sb-bottom">
+        <div class="sb-item"><i class="ti ti-text-size"></i>Text size</div>
+        <div class="sb-item"><i class="ti ti-user"></i>Sign in</div>
+      </div>
+    </aside>
+    <section class="chat">
+      <div class="disclaimer">
+        <i class="ti ti-info-circle"></i>
+        <span><strong style="font-weight:500;">I'm an AI assistant.</strong> I can help you think through questions and find resources, but I'm not a substitute for medical advice. Always confirm with your doctor.</span>
+      </div>
+      <div class="messages">
+        <div class="msg">
+          <div class="avatar"><i class="ti ti-sparkles"></i></div>
+          <div class="bubble-bot">
+            <p>Hi, I'm Catherine. I'm here to help you care for someone with dementia — questions for doctors, day-to-day challenges, finding local support, or just thinking things through.</p>
+            <p class="sub">What's something you'd like help with today?</p>
+          </div>
+        </div>
+        <div class="prompts">
+          <p class="label">Common starting points</p>
+          <div class="prompt-grid">
+            <div class="prompt"><i class="ti ti-stethoscope"></i>Questions to ask my doctor</div>
+            <div class="prompt"><i class="ti ti-moon"></i>Handling nights & sundowning</div>
+            <div class="prompt"><i class="ti ti-map-pin"></i>Find local support near me</div>
+            <div class="prompt"><i class="ti ti-users"></i>Talking with my family about this</div>
+          </div>
+        </div>
+        <div class="user-row">
+          <div class="user-bubble">I have an appointment next Tuesday and would like to have some questions for my doctor, but am not sure what good questions are.</div>
+        </div>
+        <div class="msg">
+          <div class="avatar"><i class="ti ti-sparkles"></i></div>
+          <div class="bubble-bot">
+            <p style="margin-bottom:8px;">Here are 6 questions families often find useful at this stage:</p>
+            <ol style="margin:0 0 10px 18px;padding:0;font-size:14px;">
+              <li>What stage are we at, and what should I expect over the next 6–12 months?</li>
+              <li>Which current symptoms might be treatable vs. progression?</li>
+              <li>What medications are we on, and what side effects should I watch for?</li>
+              <li>When should I call you vs. go to the ER?</li>
+              <li>Are there local services or trials you'd recommend?</li>
+              <li>How do we plan for the next big transition (driving, finances, care)?</li>
+            </ol>
+            <div class="actions">
+              <button><i class="ti ti-bookmark"></i> Save list</button>
+              <button><i class="ti ti-printer"></i> Print</button>
+              <button><i class="ti ti-send"></i> Email to myself</button>
+              <button>Refine for our situation →</button>
+            </div>
+            <p class="footnote"><i class="ti ti-info-circle"></i> These are general starting questions. Want me to tailor them based on the stage or any specific symptoms?</p>
+          </div>
+        </div>
+      </div>
+      <div class="composer">
+        <div class="composer-row">
+          <span class="placeholder">Ask anything, or describe what's going on…</span>
+          <button aria-label="Voice"><i class="ti ti-microphone"></i></button>
+          <button aria-label="Send" class="primary"><i class="ti ti-send"></i></button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<h2 style="max-width:980px;margin-left:auto;margin-right:auto;">Mobile</h2>
+<div class="stage center">
+  <div class="phone">
+    <div class="topbar">
+      <button aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+      <div class="brand"><div class="mark"><i class="ti ti-sparkles"></i></div>Catherine</div>
+      <button aria-label="Text size"><i class="ti ti-text-size"></i></button>
+    </div>
+    <div class="disclaimer">
+      <i class="ti ti-info-circle"></i>
+      <span>AI assistant — not a substitute for medical advice.</span>
+    </div>
+    <div class="messages" style="flex:1;">
+      <div class="msg">
+        <div class="avatar"><i class="ti ti-sparkles"></i></div>
+        <p style="margin:0;font-size:14px;line-height:1.55;">Hi, I'm Catherine. What can I help you think through today?</p>
+      </div>
+      <div class="user-row" style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <div class="user-bubble">Doctor appointment next Tuesday — what should I ask?</div>
+      </div>
+      <div class="msg">
+        <div class="avatar"><i class="ti ti-sparkles"></i></div>
+        <div class="bubble-bot">
+          <p style="margin:0 0 6px;">Six questions families often find useful:</p>
+          <ol>
+            <li>What stage are we at?</li>
+            <li>Which symptoms are treatable?</li>
+            <li>Medication side effects to watch?</li>
+            <li>When to call vs. go to ER?</li>
+            <li>Local services or trials?</li>
+            <li>Planning the next transition?</li>
+          </ol>
+          <div class="actions">
+            <button><i class="ti ti-bookmark"></i></button>
+            <button><i class="ti ti-share"></i></button>
+            <button>Refine →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chip-row">
+      <div class="chip">Ask my doctor</div>
+      <div class="chip">Sundowning</div>
+      <div class="chip">Find support</div>
+      <div class="chip">Family talk</div>
+    </div>
+    <div class="composer">
+      <div class="composer-row">
+        <span class="placeholder">Ask anything…</span>
+        <button aria-label="Voice"><i class="ti ti-microphone"></i></button>
+        <button aria-label="Send" class="primary"><i class="ti ti-send"></i></button>
+      </div>
+    </div>
+    <div class="tabbar">
+      <button class="tab active"><i class="ti ti-message"></i><span>Chat</span></button>
+      <button class="tab"><i class="ti ti-bookmark"></i><span>Saved</span></button>
+      <button class="tab"><i class="ti ti-book"></i><span>Resources</span></button>
+      <button class="tab"><i class="ti ti-phone"></i><span>Crisis</span></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

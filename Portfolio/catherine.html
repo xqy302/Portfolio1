@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catherine — Case Study · Sophia</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple:    #ab4aba;
+      --purple-lt: #d49de9;
+      --purple-xl: #fbf0fe;
+      --orange:    #f76b15;
+      --orange-dk: #ef5f00;
+      --black:     #211f26;
+      --gray-1:    #3a3740;
+      --gray-2:    #65636d;
+      --gray-3:    #8e8c99;
+      --gray-4:    #dbd8e0;
+      --gray-5:    #f2eff3;
+      --white:     #fdfcfd;
+      --page-bg:   #fdf9ff;
+      --font:      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font);
+      color: var(--black);
+      background: var(--page-bg);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    ::selection { background: var(--purple); color: var(--white); }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+      background: rgba(253,249,255,0.78);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .nav-back {
+      font-size: 14px; font-weight: 500; color: var(--gray-1);
+      display: flex; align-items: center; gap: 8px;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .nav-back::before { content: '←'; transition: transform 0.2s; }
+    .nav-back:hover { color: var(--purple); gap: 12px; }
+    .nav-back:hover::before { transform: translateX(-2px); }
+    .nav-logo {
+      font-size: 15px; font-weight: 600; letter-spacing: -0.2px;
+      color: var(--black);
+    }
+    .nav-logo span { color: var(--purple); }
+
+    /* ─── Layout ─── */
+    .container {
+      max-width: 1080px; margin: 0 auto; padding: 0 48px;
+    }
+    .container-narrow {
+      max-width: 720px; margin: 0 auto; padding: 0 48px;
+    }
+    section { padding: 96px 0; position: relative; }
+    section + section { padding-top: 0; }
+
+    .eyebrow {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 20px; display: inline-block;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.15; color: var(--black);
+      margin-bottom: 12px;
+    }
+    .section-deck {
+      font-size: 18px; color: var(--gray-2); line-height: 1.6;
+      max-width: 620px; margin-bottom: 48px;
+    }
+    .body-text {
+      font-size: 17px; line-height: 1.7; color: var(--gray-1);
+      max-width: 640px;
+    }
+    .body-text + .body-text { margin-top: 18px; }
+    .body-text a { color: var(--purple); border-bottom: 1px solid var(--purple-lt); }
+
+    /* ─── Hero ─── */
+    #hero {
+      padding-top: 128px; padding-bottom: 96px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 0%, rgba(171,74,186,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 90% 30%, rgba(247,107,21,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .hero-title {
+      font-size: clamp(48px, 7vw, 80px); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1;
+      background: linear-gradient(135deg, var(--purple) 0%, #c95ed4 50%, var(--orange) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 28px;
+    }
+    .hero-positioning {
+      font-size: clamp(19px, 1.8vw, 23px); font-weight: 500;
+      color: var(--black); letter-spacing: -0.015em;
+      line-height: 1.45;
+      margin-bottom: 48px;
+    }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 40px;
+      row-gap: 14px;
+    }
+    .meta-label {
+      font-size: 11px; font-weight: 600; color: var(--gray-3);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding-top: 2px;
+    }
+    .meta-value {
+      font-size: 15px; color: var(--black); font-weight: 500;
+      line-height: 1.5;
+    }
+    .hero-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 480px;
+    }
+    .hero-placeholder {
+      width: 100%; max-width: 460px;
+      aspect-ratio: 4 / 5;
+      background: linear-gradient(135deg,
+        rgba(171,74,186,0.06) 0%,
+        rgba(247,107,21,0.04) 100%);
+      border: 2px dashed var(--purple-lt);
+      border-radius: 32px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px; text-align: center;
+      position: relative;
+      box-shadow: 0 24px 64px rgba(171,74,186,0.08);
+    }
+    .hero-placeholder-badge {
+      position: absolute; top: 20px; right: 20px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--purple); background: var(--white);
+      padding: 6px 12px; border-radius: 20px;
+      border: 1px solid var(--purple-lt);
+    }
+    .hero-placeholder-icon {
+      width: 56px; height: 56px;
+      border: 2px solid var(--purple-lt); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; color: var(--purple);
+      font-size: 24px; background: var(--white);
+    }
+    .hero-placeholder-label {
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--purple); margin-bottom: 10px;
+    }
+    .hero-placeholder-caption {
+      font-size: 14px; color: var(--gray-2);
+      max-width: 320px; line-height: 1.55;
+    }
+
+    /* ─── Opening (Linda scene) ─── */
+    #opening {
+      padding: 120px 0;
+    }
+    .scene {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; max-width: 1000px; margin: 0 auto;
+      align-items: center;
+    }
+    .scene-image {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(33,31,38,0.10);
+      background: var(--gray-5);
+      aspect-ratio: 1 / 1;
+    }
+    .scene-image img {
+      display: block;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .scene-text-wrap {
+      display: flex; flex-direction: column;
+      gap: 24px;
+    }
+    .scene-timestamp {
+      font-size: 12px; font-weight: 600; color: var(--purple);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      display: inline-block;
+      width: fit-content;
+      position: relative;
+      padding-bottom: 14px;
+    }
+    .scene-timestamp::after {
+      content: ''; position: absolute;
+      left: 0; bottom: 0; width: 32px;
+      height: 1px; background: var(--purple-lt);
+    }
+    .scene-text {
+      font-size: clamp(20px, 2vw, 24px);
+      font-weight: 400; line-height: 1.55;
+      color: var(--black); letter-spacing: -0.01em;
+    }
+    .scene-text em {
+      font-style: italic; color: var(--gray-1);
+    }
+
+    /* ─── Persona ─── */
+    .persona-card {
+      background: var(--white);
+      border-radius: 24px; padding: 40px;
+      border: 1px solid var(--gray-4);
+      box-shadow: 0 4px 24px rgba(33,31,38,0.04);
+      max-width: 720px;
+      display: grid; grid-template-columns: 96px 1fr; gap: 32px;
+      align-items: start;
+    }
+    .persona-avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-lt), var(--orange));
+      position: relative; overflow: hidden;
+      box-shadow: inset 0 -8px 24px rgba(0,0,0,0.08);
+    }
+    .persona-avatar::after {
+      content: 'L'; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 600; color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .persona-name {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .persona-role {
+      font-size: 14px; color: var(--gray-2); margin-bottom: 20px;
+    }
+    .persona-row {
+      display: flex; gap: 12px; margin-bottom: 14px;
+      font-size: 14px; line-height: 1.55;
+    }
+    .persona-row-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gray-3);
+      min-width: 110px; padding-top: 3px;
+    }
+    .persona-row-text { color: var(--gray-1); flex: 1; }
+    .persona-bullets {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .persona-bullets li {
+      padding-left: 14px; position: relative;
+      color: var(--gray-1); margin-bottom: 4px;
+    }
+    .persona-bullets li::before {
+      content: '·'; position: absolute; left: 0;
+      color: var(--purple); font-weight: 700;
+    }
+
+    /* ─── Then / Now alt backgrounds ─── */
+    .alt-bg {
+      background: var(--gray-5);
+    }
+    .alt-bg::before, .alt-bg::after {
+      content: ''; display: block; height: 0;
+    }
+
+    /* ─── Wireframe placeholders & callouts ─── */
+    .wireframe-block {
+      display: grid; grid-template-columns: 1fr 320px;
+      gap: 48px; margin-bottom: 64px;
+      align-items: start;
+    }
+    .wireframe-block:last-child { margin-bottom: 0; }
+    .wireframe-block-label {
+      font-size: 13px; font-weight: 600; color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .placeholder {
+      background: var(--white);
+      border: 2px dashed var(--gray-4);
+      border-radius: 16px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px; text-align: center;
+      color: var(--gray-3);
+      min-height: 320px;
+    }
+    .placeholder-tall { min-height: 480px; }
+    .placeholder-wide { min-height: 360px; }
+    .placeholder-icon {
+      width: 40px; height: 40px;
+      border: 2px solid var(--gray-4); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px; color: var(--gray-3);
+      font-size: 18px;
+    }
+    .placeholder-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 8px;
+    }
+    .placeholder-caption {
+      font-size: 13px; color: var(--gray-2); max-width: 300px;
+      line-height: 1.5;
+    }
+    .callouts {
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .callout {
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .callout-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--purple-xl); color: var(--purple);
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .callout-text {
+      font-size: 14px; color: var(--gray-1); line-height: 1.55;
+    }
+    .callout-text strong {
+      display: block; color: var(--black); font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    /* ─── Plant line (italic insight) ─── */
+    .plant-line {
+      margin-top: 64px; padding: 32px 0 0;
+      border-top: 1px solid var(--gray-4);
+      font-style: italic; font-size: 18px;
+      color: var(--gray-1); line-height: 1.6;
+      max-width: 640px;
+    }
+
+    /* ─── Now: subsection ─── */
+    .now-block {
+      margin-bottom: 96px;
+    }
+    .now-block:last-child { margin-bottom: 0; }
+    .now-block-header {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: 32px;
+    }
+    .now-block-num {
+      font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+      color: var(--purple); font-variant-numeric: tabular-nums;
+    }
+    .now-block-title {
+      font-size: clamp(24px, 3vw, 32px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.2;
+    }
+    .now-block-deck {
+      font-size: 16px; color: var(--gray-2); line-height: 1.65;
+      max-width: 640px; margin-bottom: 32px;
+    }
+    .principle-list {
+      list-style: none; padding: 0;
+      display: grid; gap: 20px;
+    }
+    .principle-list.cols-2 { grid-template-columns: 1fr 1fr; }
+    .principle {
+      background: var(--white);
+      border: 1px solid var(--gray-4);
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .principle-title {
+      font-size: 15px; font-weight: 700; color: var(--black);
+      letter-spacing: -0.01em; margin-bottom: 6px;
+    }
+    .principle-body {
+      font-size: 14px; color: var(--gray-2); line-height: 1.55;
+    }
+    .principle-num {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      color: var(--purple); margin-bottom: 8px; display: block;
+    }
+
+    /* ─── Numbered list for response structure ─── */
+    .response-structure {
+      list-style: none; padding: 0; counter-reset: step;
+      display: grid; gap: 14px; max-width: 640px;
+    }
+    .response-structure li {
+      counter-increment: step;
+      display: grid; grid-template-columns: 32px 1fr; gap: 14px;
+      align-items: baseline;
+    }
+    .response-structure li::before {
+      content: counter(step, decimal-leading-zero);
+      font-size: 13px; font-weight: 700; color: var(--purple);
+      font-variant-numeric: tabular-nums;
+    }
+    .response-structure li strong {
+      color: var(--black); font-weight: 600;
+    }
+    .response-structure li span {
+      color: var(--gray-2); font-size: 15px; line-height: 1.55;
+    }
+    .response-structure li em {
+      font-style: italic; color: var(--gray-2);
+    }
+
+    /* ─── Memory section two-column ─── */
+    .memory-grid {
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+    .rejected-card {
+      margin-top: 24px;
+      padding: 20px 24px;
+      background: var(--gray-5);
+      border-left: 3px solid var(--gray-3);
+      border-radius: 0 12px 12px 0;
+      font-size: 14px; color: var(--gray-1); line-height: 1.6;
+    }
+    .rejected-card strong {
+      color: var(--gray-2); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      display: block; margin-bottom: 6px;
+    }
+
+    /* ─── Reflection ─── */
+    #reflection {
+      padding: 120px 0 160px;
+      background: linear-gradient(180deg, var(--page-bg) 0%, #f8f1fa 100%);
+    }
+    .reflection-block {
+      max-width: 720px; margin: 0 auto;
+    }
+    .reflection-headline {
+      font-size: clamp(24px, 3vw, 32px); font-weight: 600;
+      letter-spacing: -0.02em; line-height: 1.35;
+      color: var(--black); margin-bottom: 28px;
+    }
+    .reflection-coda {
+      font-size: clamp(20px, 2.4vw, 26px); font-weight: 500;
+      font-style: italic; color: var(--purple);
+      letter-spacing: -0.015em; line-height: 1.4;
+      margin-top: 28px;
+      padding-top: 28px;
+      border-top: 1px solid var(--purple-lt);
+    }
+    .forward-grid {
+      margin-top: 80px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .forward-card {
+      background: var(--white);
+      border-radius: 20px; padding: 32px;
+      border: 1px solid var(--gray-4);
+    }
+    .forward-card-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--orange);
+      margin-bottom: 16px; display: block;
+    }
+    .forward-card-title {
+      font-size: 19px; font-weight: 700; letter-spacing: -0.015em;
+      line-height: 1.3; margin-bottom: 12px; color: var(--black);
+    }
+    .forward-card-body {
+      font-size: 14px; color: var(--gray-2); line-height: 1.6;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 64px 48px;
+      text-align: center;
+      border-top: 1px solid var(--gray-4);
+    }
+    .footer-back {
+      font-size: 14px; font-weight: 500; color: var(--purple);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: gap 0.2s;
+    }
+    .footer-back::before { content: '←'; }
+    .footer-back:hover { gap: 12px; }
+    .footer-meta {
+      margin-top: 16px;
+      font-size: 12px; color: var(--gray-3);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 880px) {
+      nav { padding: 0 24px; }
+      .container, .container-narrow { padding: 0 24px; }
+      #hero { padding-top: 104px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { min-height: 380px; }
+      .hero-meta { column-gap: 24px; }
+      section { padding: 64px 0; }
+      .scene { grid-template-columns: 1fr; gap: 32px; }
+      .scene-image { max-width: 420px; margin: 0 auto; }
+      .persona-card { grid-template-columns: 1fr; padding: 28px; }
+      .persona-avatar { width: 72px; height: 72px; }
+      .persona-avatar::after { font-size: 28px; }
+      .wireframe-block { grid-template-columns: 1fr; gap: 32px; }
+      .memory-grid { grid-template-columns: 1fr; gap: 32px; }
+      .principle-list.cols-2 { grid-template-columns: 1fr; }
+      .forward-grid { grid-template-columns: 1fr; }
+      .hero-meta { padding: 20px 24px; column-gap: 24px; }
+      .persona-row { flex-direction: column; gap: 4px; }
+      .persona-row-label { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="portfolio.html" class="nav-back">Back to Portfolio</a>
+    <div class="nav-logo">Sophia<span>.</span></div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <span class="eyebrow">Case Study · Dementia Care · AI Companion</span>
+          <h1 class="hero-title">Catherine</h1>
+          <p class="hero-positioning">
+            An AI companion for dementia family caregivers,
+            built for the moments they face alone.
+          </p>
+          <div class="hero-meta">
+            <span class="meta-label">Role</span>
+            <span class="meta-value">UX Designer</span>
+            <span class="meta-label">Team</span>
+            <span class="meta-value">Solo UXD · 6-person early-stage team</span>
+            <span class="meta-label">Timeline</span>
+            <span class="meta-value">2022 prototype (pre-MVP) · Retrospectively reimagined in 2026</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-placeholder">
+            <span class="hero-placeholder-badge">Hero Visual</span>
+            <div class="hero-placeholder-icon">▢</div>
+            <span class="hero-placeholder-label">Final product showcase</span>
+            <span class="hero-placeholder-caption">
+              Drop the marquee mockup here — e.g. Catherine chat UI on a
+              phone, showing a memory-aware response in action
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OPENING (Linda scene) ─── -->
+  <section id="opening">
+    <div class="container">
+      <div class="scene">
+        <figure class="scene-image">
+          <img src="images/linda-opening.png" alt="Linda sits by her mother's bedside at 11pm, holding her phone, with a thought bubble that reads 'How do I answer this question?'" />
+        </figure>
+        <div class="scene-text-wrap">
+          <span class="scene-timestamp">11:00 PM</span>
+          <p class="scene-text">
+            Linda has just gotten her mother to sleep. For the fifth time today,
+            Mom asked, <em>"Where is my husband?"</em> Each time, Linda didn't
+            know how to answer — the truth would devastate her mother, a lie
+            would devastate Linda. She picks up her phone, not wanting to bother
+            anyone, looking for one thing: <em>how do I answer this question?</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THE REALITY OF CAREGIVING ─── -->
+  <section>
+    <div class="container">
+      <span class="eyebrow">Context</span>
+      <h2 class="section-title">The reality of caregiving</h2>
+      <p class="body-text">
+        Dementia caregivers don't only face care tasks. They face constant emotional
+        pressure and an information vacuum. In the critical moments — when a mother
+        asks repeatedly about someone who passed, when a father refuses to eat, when
+        wandering happens — they need immediate, trustworthy answers, not a list
+        of forty Google results to triage.
+      </p>
+      <p class="body-text">
+        Existing resources are either too scattered or too gatekept. In the moments
+        help is needed most, the caregiver is often alone.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── WHO I DESIGNED FOR ─── -->
+  <section>
+    <div class="container">
+      <span class="eyebrow">Who I designed for</span>
+      <h2 class="section-title">Family caregivers, mostly invisible</h2>
+      <p class="section-deck">
+        Spouses and adult children. Aged 45–75. Moderate-to-low digital
+        comfort. Living under sustained stress. Almost always unprepared for
+        the sudden behavioral incidents dementia brings.
+      </p>
+
+      <div class="persona-card">
+        <div class="persona-avatar" aria-hidden="true"></div>
+        <div>
+          <h3 class="persona-name">Linda, 55</h3>
+          <p class="persona-role">Daughter and primary caregiver</p>
+
+          <div class="persona-row">
+            <span class="persona-row-label">Caring for</span>
+            <span class="persona-row-text">Mom (Sarah, 78) · early-to-mid stage dementia · lives with her</span>
+          </div>
+          <div class="persona-row">
+            <span class="persona-row-label">Hardest hours</span>
+            <span class="persona-row-text">Late evening, after the household quiets and questions start to repeat</span>
+          </div>
+          <div class="persona-row">
+            <span class="persona-row-label">Tech comfort</span>
+            <span class="persona-row-text">Daily phone user. Will not read a 12-paragraph article at 11 PM.</span>
+          </div>
+          <div class="persona-row">
+            <span class="persona-row-label">Pain points</span>
+            <ul class="persona-bullets persona-row-text">
+              <li>Repeated questions she doesn't know how to answer</li>
+              <li>Behavioral changes that arrive without warning</li>
+              <li>Generic Google results that don't fit her exact situation</li>
+              <li>Reluctance to keep asking family or friends for help</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THEN: 2022 ─── -->
+  <section class="alt-bg">
+    <div class="container" style="padding-top: 96px; padding-bottom: 96px;">
+      <span class="eyebrow">2022 · Then</span>
+      <h2 class="section-title">What we built</h2>
+      <p class="section-deck" style="margin-bottom: 12px;">
+        Catherine was built by a fully remote, early-stage team. As the only
+        designer, I worked outside the rooms where most decisions formed.
+      </p>
+      <p class="section-deck">
+        I owned the sign-up/login flow and the chat interface wireframes.
+        AI behavior, tone, and product strategy sat outside my scope.
+      </p>
+
+      <!-- Sign up wireframe -->
+      <div class="wireframe-block">
+        <figure class="placeholder placeholder-tall">
+          <div class="placeholder-icon">▢</div>
+          <span class="placeholder-label">Wireframe placeholder</span>
+          <span class="placeholder-caption">
+            2022 sign-up screen — full-page form, required fields including
+            phone number, password complexity rules, "Try as guest" demoted
+            to secondary link
+          </span>
+        </figure>
+        <div>
+          <h3 class="wireframe-block-label">Sign-up / Log-in</h3>
+          <div class="callouts">
+            <div class="callout">
+              <span class="callout-num">1</span>
+              <span class="callout-text">
+                <strong>Gate before value.</strong>
+                Users had to commit before experiencing what Catherine could do for them.
+              </span>
+            </div>
+            <div class="callout">
+              <span class="callout-num">2</span>
+              <span class="callout-text">
+                <strong>Required fields stacked up.</strong>
+                Name, email, phone, complex password — all asked upfront, without
+                explaining what they were for.
+              </span>
+            </div>
+            <div class="callout">
+              <span class="callout-num">3</span>
+              <span class="callout-text">
+                <strong>"Try as guest" was a side door.</strong>
+                The most valuable entry point was a footnote, not the default path.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat wireframe -->
+      <div class="wireframe-block">
+        <figure class="placeholder placeholder-tall">
+          <div class="placeholder-icon">▢</div>
+          <span class="placeholder-label">Wireframe placeholder</span>
+          <span class="placeholder-caption">
+            2022 chat interface — generic greeting, topic picker first, no
+            memory anchor, no signal of continuity between sessions
+          </span>
+        </figure>
+        <div>
+          <h3 class="wireframe-block-label">Chat interface</h3>
+          <div class="callouts">
+            <div class="callout">
+              <span class="callout-num">1</span>
+              <span class="callout-text">
+                <strong>Generic greeting.</strong>
+                Catherine introduced herself the same way to everyone, every time.
+                No acknowledgment of context, urgency, or returning visit.
+              </span>
+            </div>
+            <div class="callout">
+              <span class="callout-num">2</span>
+              <span class="callout-text">
+                <strong>No memory anchor.</strong>
+                Each session felt like a fresh start. The caregiver had to
+                re-explain their situation every time.
+              </span>
+            </div>
+            <div class="callout">
+              <span class="callout-num">3</span>
+              <span class="callout-text">
+                <strong>"Pick a topic" framing.</strong>
+                Catherine asked what category the user wanted to discuss —
+                a UI metaphor that doesn't match how distress arrives.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="plant-line">
+        Feedback was sparse. Decisions arrived as instructions, not
+        conversations, and I delivered without asking what they were for.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── NOW: 2026 ─── -->
+  <section>
+    <div class="container" style="padding-top: 96px;">
+      <span class="eyebrow">2026 · Now</span>
+      <h2 class="section-title">Reframing Catherine as an AI companion</h2>
+      <p class="section-deck">
+        What I'd build if I came back to this problem today — not as a
+        chatbot, but as a companion that remembers, behaves with care, and
+        earns its place in a caregiver's hardest hours.
+      </p>
+
+      <!-- Subsection 1 — Sign-up -->
+      <div class="now-block">
+        <div class="now-block-header">
+          <span class="now-block-num">01</span>
+          <h3 class="now-block-title">Trial first. Sign-up later.</h3>
+        </div>
+        <p class="now-block-deck">
+          Let users feel Catherine before asking them for anything. Sign-up
+          becomes an upgrade — for memory, history, and continuity — not a gate.
+        </p>
+
+        <ul class="principle-list cols-2">
+          <li class="principle">
+            <span class="principle-num">Principle</span>
+            <h4 class="principle-title">Lead with value, not the form.</h4>
+            <p class="principle-body">
+              "Try as guest" is the default path. Users experience a full
+              Catherine interaction before any commitment is asked of them.
+            </p>
+          </li>
+          <li class="principle">
+            <span class="principle-num">Principle</span>
+            <h4 class="principle-title">Earn the sign-up.</h4>
+            <p class="principle-body">
+              Once a user has felt the value, registration is invited with
+              a clear "here's what you gain": memory, history, continuity.
+            </p>
+          </li>
+          <li class="principle">
+            <span class="principle-num">Principle</span>
+            <h4 class="principle-title">Shrink the form.</h4>
+            <p class="principle-body">
+              Only ask for what is necessary. Phone, complex passwords,
+              and marketing checkboxes are removed.
+            </p>
+          </li>
+          <li class="principle">
+            <span class="principle-num">Principle</span>
+            <h4 class="principle-title">Respect the moment of entry.</h4>
+            <p class="principle-body">
+              Many users arrive at 11 PM, mid-crisis. The flow assumes
+              one hand, low attention, high stress — not a fresh desk and a coffee.
+            </p>
+          </li>
+        </ul>
+
+        <figure class="placeholder placeholder-wide" style="margin-top: 32px;">
+          <div class="placeholder-icon">▢</div>
+          <span class="placeholder-label">Flow placeholder</span>
+          <span class="placeholder-caption">
+            Trial-first entry → first valuable interaction → contextual sign-up invite
+          </span>
+        </figure>
+      </div>
+
+      <!-- Subsection 2 — Tone -->
+      <div class="now-block">
+        <div class="now-block-header">
+          <span class="now-block-num">02</span>
+          <h3 class="now-block-title">Designing how Catherine talks.</h3>
+        </div>
+        <p class="now-block-deck">
+          In an AI product, <em>how it talks</em> is the product. Tone and
+          response structure aren't polish — they're the core of whether
+          Catherine feels trustworthy at 11 PM.
+        </p>
+
+        <h4 class="principle-title" style="margin-bottom: 12px;">Voice principles</h4>
+        <p class="body-text" style="margin-bottom: 36px;">
+          Calm. Supportive. Non-judgmental. Never alarming, never
+          instructive, never preachy. The voice meets the caregiver where
+          they are — exhausted, uncertain, doing their best.
+        </p>
+
+        <h4 class="principle-title" style="margin-bottom: 16px;">Response structure</h4>
+        <p class="body-text" style="margin-bottom: 24px;">
+          Every substantive answer follows the same five-part shape, so
+          users learn what to expect:
+        </p>
+
+        <ol class="response-structure">
+          <li>
+            <span>
+              <strong>Emotional validation.</strong> Acknowledge that the
+              moment is hard before doing anything else.
+            </span>
+          </li>
+          <li>
+            <span>
+              <strong>Possible reason.</strong> Name a likely cause —
+              medical, environmental, behavioral — so the user has a frame.
+            </span>
+          </li>
+          <li>
+            <span>
+              <strong>What you can try.</strong> One to three concrete
+              things to try in the next few minutes.
+            </span>
+          </li>
+          <li>
+            <span>
+              <strong>What to avoid.</strong> Common missteps that make the
+              situation harder.
+            </span>
+          </li>
+          <li>
+            <span>
+              <strong>Safety disclaimer.</strong>
+              <em>"This assistant provides general caregiving information.
+              It does not replace medical advice."</em>
+            </span>
+          </li>
+        </ol>
+
+        <figure class="placeholder placeholder-wide" style="margin-top: 32px;">
+          <div class="placeholder-icon">▢</div>
+          <span class="placeholder-label">Response example placeholder</span>
+          <span class="placeholder-caption">
+            A real Catherine response showing the five parts in action,
+            keyed to Linda's "Where is my husband?" question
+          </span>
+        </figure>
+      </div>
+
+      <!-- Subsection 3 — Memory -->
+      <div class="now-block">
+        <div class="now-block-header">
+          <span class="now-block-num">03</span>
+          <h3 class="now-block-title">Making memory visible without making it loud.</h3>
+        </div>
+        <p class="now-block-deck">
+          When Linda types <em>"She's asking about Dad again,"</em> Catherine's
+          response draws on what it remembers: Mom's name is Sarah. Mom no
+          longer remembers Dad passed in 2019. This question has come up
+          before. The design question: how does the UI signal that memory
+          is in use, without breaking the conversation?
+        </p>
+
+        <div class="memory-grid">
+          <div>
+            <h4 class="principle-title" style="margin-bottom: 12px;">Artifact</h4>
+            <figure class="placeholder placeholder-tall">
+              <div class="placeholder-icon">▢</div>
+              <span class="placeholder-label">Chat UI mockup</span>
+              <span class="placeholder-caption">
+                Linda's question + Catherine's response, with a subtle
+                memory marker on the parts drawn from prior context.
+                Tap reveals a small card: "Based on: Mom no longer remembers
+                Dad passed · Added April 3 · Edit / Remove"
+              </span>
+            </figure>
+
+            <div class="rejected-card">
+              <strong>Rejected approach</strong>
+              We considered a "Using memory" banner above each response —
+              but it made the conversation feel audited instead of
+              understood. Memory should be discoverable, not announced.
+            </div>
+          </div>
+
+          <div>
+            <h4 class="principle-title" style="margin-bottom: 20px;">Design principles</h4>
+            <ul class="principle-list">
+              <li class="principle">
+                <h4 class="principle-title">Transparent by default, but quiet.</h4>
+                <p class="principle-body">
+                  Memory should be discoverable, not shouted. A subtle
+                  underline or dot — not a banner or callout.
+                </p>
+              </li>
+              <li class="principle">
+                <h4 class="principle-title">Editable at the point of use.</h4>
+                <p class="principle-body">
+                  When you see Catherine using a memory, you can tap it
+                  there to view or edit — no settings-page archaeology.
+                </p>
+              </li>
+              <li class="principle">
+                <h4 class="principle-title">User-driven, not Catherine-driven.</h4>
+                <p class="principle-body">
+                  Catherine never announces "I remember X." Memory only
+                  surfaces when it's naturally being used in a response.
+                </p>
+              </li>
+              <li class="principle">
+                <h4 class="principle-title">Never quantify intimacy.</h4>
+                <p class="principle-body">
+                  No "Catherine knows 47 facts about your mom" metrics.
+                  That's both surveillance-y and reductive.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── REFLECTION ─── -->
+  <section id="reflection">
+    <div class="container">
+      <span class="eyebrow">Reflection</span>
+      <h2 class="section-title">What I learned, asked years late.</h2>
+
+      <div class="reflection-block">
+        <p class="reflection-headline">
+          Back then, design decisions arrived without rationale, and I
+          executed without questioning what I might have asked. I didn't
+          realize that pushing for the "why" — even in writing, even
+          unanswered — was part of my job, not a luxury reserved for
+          senior designers.
+        </p>
+        <p class="reflection-coda">
+          In some sense, this case study is those questions, asked years late.
+        </p>
+      </div>
+
+      <div class="forward-grid">
+        <div class="forward-card">
+          <span class="forward-card-label">Forward-looking · 01</span>
+          <h3 class="forward-card-title">Design for trust before engagement.</h3>
+          <p class="forward-card-body">
+            In high-stakes contexts, retention and DAU will mislead you.
+            Solve "do users dare to trust this?" before "how often do users
+            come back?" Engagement metrics are downstream of trust — never
+            the other way around.
+          </p>
+        </div>
+        <div class="forward-card">
+          <span class="forward-card-label">Forward-looking · 02</span>
+          <h3 class="forward-card-title">Start with the moment, not the feature.</h3>
+          <p class="forward-card-body">
+            Always begin from a specific user moment — with time, place,
+            and emotional context — not an abstract feature description
+            like "an AI assistant for X." If you can't picture the moment,
+            you can't design for it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <a href="portfolio.html" class="footer-back">Back to Portfolio</a>
+    <p class="footer-meta">Catherine · A retrospective case study by Sophia · 2026</p>
+  </footer>
+
+</body>
+</html>

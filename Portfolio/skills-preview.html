@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skills Card — Option Comparison</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple:    #ab4aba;
+      --purple-lt: #d49de9;
+      --purple-xl: #fbf0fe;
+      --yellow:    #f76b15;
+      --yellow-dk: #ef5f00;
+      --black:     #211f26;
+      --gray-1:    #3a3740;
+      --gray-2:    #65636d;
+      --gray-3:    #8e8c99;
+      --gray-4:    #dbd8e0;
+      --gray-5:    #f2eff3;
+      --white:     #fdfcfd;
+      --page-bg:   #fdf9ff;
+      --font:      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body {
+      font-family: var(--font);
+      color: var(--black);
+      background: var(--page-bg);
+      -webkit-font-smoothing: antialiased;
+      padding: 60px 0;
+    }
+
+    .preview-container {
+      max-width: 1180px; margin: 0 auto; padding: 0 48px;
+    }
+    .preview-header { margin-bottom: 56px; }
+    .preview-title {
+      font-size: 32px; font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 8px;
+    }
+    .preview-sub {
+      font-size: 15px; color: var(--gray-2); line-height: 1.5;
+    }
+
+    .variant-block { margin-bottom: 80px; }
+    .variant-header {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--gray-4);
+    }
+    .variant-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple);
+      background: var(--purple-xl); padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .variant-title {
+      font-size: 18px; font-weight: 600; letter-spacing: -0.015em;
+    }
+    .variant-note {
+      margin-left: auto;
+      font-size: 13px; color: var(--gray-3);
+      font-style: italic;
+    }
+
+    /* ── skill cards (mirrors portfolio.html exactly) ── */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .skill-group {
+      background: var(--gray-5); border-radius: 24px; padding: 36px 32px;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+    }
+    .skill-icon {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: var(--purple-xl); display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .skill-group-title {
+      font-size: 17px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px;
+    }
+    .skill-group-sub {
+      font-size: 13px; color: var(--gray-2); margin-bottom: 24px; line-height: 1.5;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 10px;
+      background: var(--white); color: var(--gray-1); border: 1px solid var(--gray-4);
+    }
+
+    /* ── Variant 2: Plum-xl monochrome ── */
+    .skill-group.featured-v2 {
+      background: var(--purple-xl);
+    }
+    .skill-group.featured-v2 .skill-icon {
+      background: rgba(171,74,186,0.12);
+      color: var(--purple);
+    }
+    .skill-group.featured-v2 .skill-tag {
+      background: rgba(255,255,255,0.7);
+      border-color: rgba(171,74,186,0.18);
+    }
+
+    /* ── Variant 3: Deeper peach gradient ── */
+    .skill-group.featured-v3 {
+      background: linear-gradient(135deg, #FFD9B8 0%, #FFB78A 100%);
+      box-shadow: 0 4px 24px rgba(247,107,21,0.10);
+    }
+    .skill-group.featured-v3 .skill-icon {
+      background: rgba(255,255,255,0.55);
+      color: var(--yellow);
+    }
+    .skill-group.featured-v3 .skill-tag {
+      background: rgba(255,255,255,0.65);
+      border-color: rgba(33,31,38,0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-container">
+
+    <div class="preview-header">
+      <h1 class="preview-title">Skills card — option comparison</h1>
+      <p class="preview-sub">
+        Two featured-card treatments rendered against the actual portfolio
+        styling. Side cards (gray-5) are unchanged.
+      </p>
+    </div>
+
+    <!-- ─── Variant 2 ─── -->
+    <div class="variant-block">
+      <div class="variant-header">
+        <span class="variant-tag">Option 2</span>
+        <span class="variant-title">Plum-xl monochrome</span>
+        <span class="variant-note">Same hue family as buttons · most subtle</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-group featured-v2">
+          <div class="skill-icon">✦</div>
+          <div class="skill-group-title">Product Design</div>
+          <div class="skill-group-sub">End-to-end product design across mobile, web, and emerging platforms.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">UX Design</span>
+            <span class="skill-tag">UI Design</span>
+            <span class="skill-tag">Systems Design</span>
+            <span class="skill-tag">Prototyping</span>
+            <span class="skill-tag">Design Tokens</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-icon">🔍</div>
+          <div class="skill-group-title">Research & Strategy</div>
+          <div class="skill-group-sub">Grounding every design decision in real user insight and business goals.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">User Interviews</span>
+            <span class="skill-tag">Usability Testing</span>
+            <span class="skill-tag">Journey Mapping</span>
+            <span class="skill-tag">Competitive Analysis</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-icon">🛠</div>
+          <div class="skill-group-title">Tools & Craft</div>
+          <div class="skill-group-sub">A sharp toolkit for every phase of the design process.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Framer</span>
+            <span class="skill-tag">Principle</span>
+            <span class="skill-tag">Maze</span>
+            <span class="skill-tag">Notion</span>
+            <span class="skill-tag">HTML/CSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Variant 3 ─── -->
+    <div class="variant-block">
+      <div class="variant-header">
+        <span class="variant-tag">Option 3</span>
+        <span class="variant-title">Deeper peach gradient</span>
+        <span class="variant-note">More warmth · clearer "this one is featured" signal</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-group featured-v3">
+          <div class="skill-icon">✦</div>
+          <div class="skill-group-title">Product Design</div>
+          <div class="skill-group-sub">End-to-end product design across mobile, web, and emerging platforms.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">UX Design</span>
+            <span class="skill-tag">UI Design</span>
+            <span class="skill-tag">Systems Design</span>
+            <span class="skill-tag">Prototyping</span>
+            <span class="skill-tag">Design Tokens</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-icon">🔍</div>
+          <div class="skill-group-title">Research & Strategy</div>
+          <div class="skill-group-sub">Grounding every design decision in real user insight and business goals.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">User Interviews</span>
+            <span class="skill-tag">Usability Testing</span>
+            <span class="skill-tag">Journey Mapping</span>
+            <span class="skill-tag">Competitive Analysis</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-icon">🛠</div>
+          <div class="skill-group-title">Tools & Craft</div>
+          <div class="skill-group-sub">A sharp toolkit for every phase of the design process.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Framer</span>
+            <span class="skill-tag">Principle</span>
+            <span class="skill-tag">Maze</span>
+            <span class="skill-tag">Notion</span>
+            <span class="skill-tag">HTML/CSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
