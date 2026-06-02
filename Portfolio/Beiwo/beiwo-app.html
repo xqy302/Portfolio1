@@ -581,7 +581,7 @@
         <div class="hero-time" id="heroTime">10:42</div>
         <div class="banner" id="banner">
           <div>🌙</div>
-          <div><strong id="bannerTitle">Amy crawled into Beiwo</strong><span id="bannerSub">Night Owls · still up?</span></div>
+          <div><strong id="bannerTitle">LT crawled into Beiwo</strong><span id="bannerSub">Night Owls · still up?</span></div>
         </div>
         <div class="nest-card">
           <div class="nest-head">
@@ -716,16 +716,16 @@
   const toast = document.querySelector("#toast");
   const emojis = ["🌙", "⭐", "🛏", "☁️", "🌛", "✨"];
   const allFriends = [
-    { name: "Shirley", initials: "Shi", sub: "12-day streak", inBed: true, time: "10:01 PM" },
-    { name: "Amy", initials: "Amy", sub: "Avg. 11:20 PM sleep", inBed: true, time: "10:30 PM" },
-    { name: "Tiffany", initials: "Tif", sub: "Certified night owl", inBed: false, time: null },
-    { name: "Jolie", initials: "Jol", sub: "Avg. 12:45 AM sleep", inBed: false, time: null }
+    { name: "Shirley", initials: "S", sub: "12-day streak", inBed: true, time: "10:01 PM" },
+    { name: "LT", initials: "L", sub: "Avg. 11:20 PM sleep", inBed: true, time: "10:30 PM" },
+    { name: "Tiffany", initials: "T", sub: "Certified night owl", inBed: false, time: null },
+    { name: "Jolie", initials: "J", sub: "Avg. 12:45 AM sleep", inBed: false, time: null }
   ];
   let state = JSON.parse(localStorage.getItem("beiwo-state") || "null") || {
     nestName: "Night Owls",
     icon: "🌙",
     goal: "11:00 PM",
-    selectedFriends: ["Shirley", "Amy", "Tiffany"],
+    selectedFriends: ["Shirley", "LT", "Tiffany"],
     youInBed: false,
     youTime: null,
     morning: false,
@@ -768,7 +768,7 @@
   }
 
   function roster() {
-    return [...invitedMembers(), { name: "You", initials: "You", sub: state.youInBed ? "In Beiwo" : "Still up", inBed: state.youInBed, time: state.youTime, isYou: true }];
+    return [...invitedMembers(), { name: "You", initials: "Y", sub: state.youInBed ? "In Beiwo" : "Still up", inBed: state.youInBed, time: state.youTime, isYou: true }];
   }
 
   function renderMembers() {
