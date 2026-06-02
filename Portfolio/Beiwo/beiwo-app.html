@@ -665,7 +665,7 @@
           <div class="section-label">Beiwo ranking</div>
           <div id="recapList"></div>
         </div>
-        <button class="primary" id="riseBtn">Rise and shine</button>
+        <button class="primary" id="riseBtn" type="button">Rise and shine</button>
       </section>
 
       <section class="screen" id="history">
@@ -930,13 +930,24 @@
   document.querySelector("#sleepCta").addEventListener("click", crawlIn);
   document.querySelector("#detailSleepBtn").addEventListener("click", crawlIn);
   document.querySelector("#simulateBtn").addEventListener("click", simulateFriend);
-  document.querySelector("#riseBtn").addEventListener("click", () => {
+  function startNewDay(event) {
+    event?.preventDefault();
+    event?.stopPropagation();
     state.morning = false;
     state.youInBed = false;
     state.youTime = null;
+    app.classList.remove("morning", "winddown");
     save();
     openScreen("home");
     showToast("Good morning. Tonight's Beiwo is ready whenever you are.");
+  }
+
+  document.addEventListener("pointerup", event => {
+    if (event.target.closest("#riseBtn")) startNewDay(event);
+  }, true);
+
+  document.querySelector("#riseBtn").addEventListener("click", event => {
+    startNewDay(event);
   });
   document.querySelector("#resetBtn").addEventListener("click", () => {
     localStorage.removeItem("beiwo-state");
