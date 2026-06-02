@@ -768,7 +768,7 @@
   }
 
   function roster() {
-    return [...invitedMembers(), { name: "You", initials: "Y", sub: state.youInBed ? "In Beiwo" : "Still up", inBed: state.youInBed, time: state.youTime, isYou: true }];
+    return [...invitedMembers(), { name: "You", initials: "You", sub: state.youInBed ? "In Beiwo" : "Still up", inBed: state.youInBed, time: state.youTime, isYou: true }];
   }
 
   function renderMembers() {
