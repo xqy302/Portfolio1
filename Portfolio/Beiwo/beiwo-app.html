@@ -716,16 +716,16 @@
   const toast = document.querySelector("#toast");
   const emojis = ["🌙", "⭐", "🛏", "☁️", "🌛", "✨"];
   const allFriends = [
-    { name: "Lin", initials: "Lin", sub: "12-day streak", inBed: true, time: "10:01 PM" },
+    { name: "Shirley", initials: "Shi", sub: "12-day streak", inBed: true, time: "10:01 PM" },
     { name: "Amy", initials: "Amy", sub: "Avg. 11:20 PM sleep", inBed: true, time: "10:30 PM" },
-    { name: "Felix", initials: "Fx", sub: "Certified night owl", inBed: false, time: null },
-    { name: "Jo", initials: "Jo", sub: "Avg. 12:45 AM sleep", inBed: false, time: null }
+    { name: "Tiffany", initials: "Tif", sub: "Certified night owl", inBed: false, time: null },
+    { name: "Jolie", initials: "Jol", sub: "Avg. 12:45 AM sleep", inBed: false, time: null }
   ];
   let state = JSON.parse(localStorage.getItem("beiwo-state") || "null") || {
     nestName: "Night Owls",
     icon: "🌙",
     goal: "11:00 PM",
-    selectedFriends: ["Lin", "Amy", "Felix"],
+    selectedFriends: ["Shirley", "Amy", "Tiffany"],
     youInBed: false,
     youTime: null,
     morning: false,
