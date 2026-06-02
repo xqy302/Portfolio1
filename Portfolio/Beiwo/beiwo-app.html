@@ -932,9 +932,11 @@
   document.querySelector("#simulateBtn").addEventListener("click", simulateFriend);
   document.querySelector("#riseBtn").addEventListener("click", () => {
     state.morning = false;
+    state.youInBed = false;
+    state.youTime = null;
     save();
     openScreen("home");
-    showToast("Tonight's Beiwo is ready whenever you are.");
+    showToast("Good morning. Tonight's Beiwo is ready whenever you are.");
   });
   document.querySelector("#resetBtn").addEventListener("click", () => {
     localStorage.removeItem("beiwo-state");
