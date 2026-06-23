@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>beiwo · Interactive Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --bg: #090712;
+    --panel: #15111f;
+    --panel-2: #1b1430;
+    --lavender: #c4b5e8;
+    --lavender-2: #8d78c8;
+    --deep: #2e1f5e;
+    --glow: #eee8ff;
+    --gold: #d4a853;
+    --note: #9b8fc2;
+    --green: #6ddb8b;
+    --rose: #f18ca8;
+    --line: rgba(196,181,232,0.16);
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+    color: #faf9ff;
+    font-family: Inter, system-ui, sans-serif;
+    background:
+      radial-gradient(circle 420px at 20% 12%, rgba(196,181,232,0.12), transparent 70%),
+      radial-gradient(circle 380px at 80% 86%, rgba(212,168,83,0.08), transparent 70%),
+      #090712;
+  }
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) minmax(300px, 390px);
+    gap: 44px;
+    align-items: center;
+    width: min(920px, 100%);
+  }
+  .case-note { color: var(--note); }
+  .case-note .eyebrow {
+    margin: 0 0 12px;
+    color: rgba(196,181,232,0.72);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .case-note h1 {
+    margin: 0;
+    font-family: "DM Serif Display", serif;
+    font-style: italic;
+    font-size: clamp(42px, 7vw, 72px);
+    line-height: 0.95;
+    color: var(--glow);
+    font-weight: 400;
+  }
+  .case-note p {
+    margin: 18px 0 0;
+    max-width: 34ch;
+    color: rgba(238,232,255,0.62);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .case-note .mini-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .mini-stat {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    background: rgba(255,255,255,0.035);
+  }
+  .mini-stat strong {
+    display: block;
+    color: var(--gold);
+    font-family: "DM Serif Display", serif;
+    font-size: 18px;
+    font-weight: 400;
+  }
+  .mini-stat span {
+    display: block;
+    margin-top: 2px;
+    color: rgba(155,143,194,0.86);
+    font-size: 10px;
+  }
+  .phone {
+    width: min(390px, 100%);
+    height: min(820px, calc(100vh - 56px));
+    min-height: 680px;
+    border-radius: 42px;
+    border: 1px solid rgba(196,181,232,0.22);
+    background: #0c0915;
+    box-shadow: 0 0 0 7px #05040a, 0 32px 110px rgba(46,31,94,0.48);
+    position: relative;
+    overflow: hidden;
+  }
+  .phone::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    z-index: 30;
+    width: 104px;
+    height: 24px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: #05040a;
+  }
+  .app {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 120% 72% at 50% 110%, rgba(46,31,94,0.98) 0%, rgba(15,11,26,0.98) 58%),
+      #0f0b1a;
+  }
+  .app.winddown {
+    background:
+      radial-gradient(circle 170px at 50% 28%, rgba(212,168,83,0.16), transparent 70%),
+      radial-gradient(ellipse 120% 74% at 50% 110%, rgba(20,15,45,1) 0%, rgba(7,6,14,1) 65%);
+  }
+  .app.morning {
+    background:
+      radial-gradient(circle 260px at 50% -8%, rgba(244,178,68,0.28), transparent 62%),
+      radial-gradient(ellipse 120% 80% at 50% -10%, #4a2f10 0%, #1a0f08 42%, #0f0b1a 82%);
+  }
+  .status {
+    position: relative;
+    z-index: 2;
+    height: 66px;
+    display: flex;
+    justify-content: space-between;
+    padding: 48px 24px 0;
+    color: rgba(255,255,255,0.36);
+    font-size: 11px;
+  }
+  .screen {
+    display: none;
+    height: calc(100% - 66px);
+    padding: 18px 20px 78px;
+    position: relative;
+    z-index: 2;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+  .screen.active { display: flex; flex-direction: column; }
+  .top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .brand {
+    font-family: "DM Serif Display", serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--glow);
+  }
+  .icon-btn, .text-btn, .primary, .ghost, .chip, .friend, .nav-item, .sleep-card {
+    border: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+  }
+  .hero-time {
+    font-family: "DM Serif Display", serif;
+    color: var(--glow);
+    font-size: 54px;
+    line-height: 0.92;
+    font-weight: 400;
+  }
+  .date { margin-top: 5px; color: var(--note); font-size: 12px; letter-spacing: 0.08em; }
+  .banner {
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 16px 0 0;
+    padding: 12px 13px;
+    border-radius: 14px;
+    border: 1px solid rgba(212,168,83,0.30);
+    background: rgba(46,31,94,0.68);
+    box-shadow: 0 10px 28px rgba(212,168,83,0.08);
+  }
+  .banner.show { display: flex; animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from { transform: translateY(-8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .banner strong { display: block; color: var(--glow); font-size: 13px; font-weight: 600; }
+  .banner span { display: block; margin-top: 3px; color: var(--note); font-size: 11px; line-height: 1.45; }
+  .nest-card, .panel {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.045);
+    backdrop-filter: blur(16px);
+  }
+  .nest-card {
+    margin-top: 18px;
+    padding: 16px;
+  }
+  .nest-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .nest-title { display: flex; align-items: center; gap: 8px; color: var(--lavender); font-size: 14px; font-weight: 500; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+  .text-btn {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(196,181,232,0.08);
+    border: 1px solid rgba(196,181,232,0.20);
+    color: var(--lavender);
+    font-size: 12px;
+  }
+  .member-list, .timeline, .friend-list { display: flex; flex-direction: column; gap: 10px; }
+  .member, .log-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avatar {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.46);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .avatar.in {
+    background: linear-gradient(135deg, #2e1f5e, #4a3580);
+    border-color: rgba(196,181,232,0.34);
+    color: var(--lavender);
+  }
+  .member-main, .log-main, .friend-main { flex: 1; min-width: 0; }
+  .name { color: rgba(255,255,255,0.78); font-size: 13px; }
+  .sub { margin-top: 2px; color: var(--note); font-size: 11px; }
+  .in-text { color: var(--green); }
+  .late-text { color: var(--rose); }
+  .time-text {
+    color: var(--note);
+    font-family: "DM Serif Display", serif;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .sleep-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(196,181,232,0.26);
+    background: linear-gradient(135deg, #3d2870, #5a3d9e);
+    text-align: left;
+    box-shadow: 0 18px 38px rgba(46,31,94,0.28);
+  }
+  .sleep-card.done { background: linear-gradient(135deg, #181229, #2a2042); }
+  .sleep-icon { font-size: 28px; }
+  .sleep-card strong { display: block; color: var(--glow); font-size: 15px; }
+  .sleep-card span { display: block; margin-top: 3px; color: rgba(232,223,247,0.70); font-size: 11px; }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .stat {
+    min-width: 0;
+    border-radius: 13px;
+    border: 1px solid rgba(196,181,232,0.11);
+    background: rgba(255,255,255,0.032);
+    padding: 11px 8px;
+    text-align: center;
+  }
+  .stat strong {
+    display: block;
+    color: var(--gold);
+    font-family: "DM Serif Display", serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .stat span { display: block; margin-top: 5px; color: var(--note); font-size: 9px; }
+  .panel {
+    padding: 16px;
+    margin-top: 14px;
+  }
+  .section-label {
+    margin-bottom: 12px;
+    color: var(--note);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .moon-wrap, .sun-wrap {
+    display: grid;
+    place-items: center;
+    padding: 10px 0 6px;
+  }
+  .moon, .sun {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  .moon {
+    background: radial-gradient(circle at 35% 35%, #fff9e6, #d4a853 42%, #a07830);
+    box-shadow: 0 0 34px rgba(212,168,83,0.46), 0 0 90px rgba(212,168,83,0.14);
+  }
+  .sun {
+    width: 72px;
+    height: 72px;
+    background: radial-gradient(circle at 40% 40%, #fff4c2, #f0a830 52%, #d4751a);
+    box-shadow: 0 0 36px rgba(240,168,48,0.5), 0 0 88px rgba(240,168,48,0.15);
+  }
+  .detail-name {
+    text-align: center;
+    font-family: "DM Serif Display", serif;
+    color: var(--glow);
+    font-size: 23px;
+    font-style: italic;
+  }
+  .detail-meta { margin-top: 4px; color: var(--note); text-align: center; font-size: 11px; }
+  .timeline {
+    position: relative;
+    overflow: auto;
+    padding-right: 2px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background: linear-gradient(to bottom, rgba(196,181,232,0.34), transparent);
+  }
+  .dot {
+    position: relative;
+    z-index: 1;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgba(196,181,232,0.20);
+    background: #15111f;
+    color: var(--lavender);
+    flex: 0 0 auto;
+  }
+  .dot.empty { color: rgba(255,255,255,0.24); border-color: rgba(255,255,255,0.08); }
+  .primary, .ghost {
+    width: 100%;
+    min-height: 48px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  .primary {
+    background: linear-gradient(135deg, #3d2870, #5a3d9e);
+    border: 1px solid rgba(196,181,232,0.24);
+    color: var(--glow);
+  }
+  .ghost {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(196,181,232,0.14);
+    color: var(--lavender);
+  }
+  .field { margin-top: 12px; }
+  label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--note);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  input, select {
+    width: 100%;
+    height: 44px;
+    border: 1px solid rgba(196,181,232,0.22);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    color: var(--glow);
+    padding: 0 12px;
+    font: inherit;
+    outline: none;
+  }
+  select option { color: #15111f; }
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 7px;
+  }
+  .chip {
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(196,181,232,0.12);
+    font-size: 18px;
+  }
+  .chip.selected {
+    border-color: var(--lavender);
+    background: rgba(124,106,173,0.25);
+  }
+  .friend {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.026);
+    text-align: left;
+  }
+  .friend.selected {
+    border-color: rgba(196,181,232,0.28);
+    background: rgba(46,31,94,0.42);
+  }
+  .check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(196,181,232,0.28);
+    color: var(--note);
+  }
+  .friend.selected .check {
+    background: var(--lavender);
+    color: #1a1625;
+  }
+  .summary-card {
+    text-align: center;
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+  }
+  .big-emoji { font-size: 42px; }
+  .summary-card h2 {
+    margin: 7px 0 3px;
+    font-family: "DM Serif Display", serif;
+    color: var(--glow);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .summary-card p { margin: 0; color: var(--note); font-size: 12px; }
+  .toast {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 86px;
+    z-index: 20;
+    display: none;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(212,168,83,0.30);
+    background: rgba(17,13,31,0.92);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.28);
+    color: var(--glow);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .toast.show { display: block; animation: toast 2.6s ease forwards; }
+  @keyframes toast {
+    0% { transform: translateY(12px); opacity: 0; }
+    12%, 82% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(8px); opacity: 0; }
+  }
+  .nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 8px 10px 15px;
+    border-top: 1px solid rgba(255,255,255,0.055);
+    background: rgba(8,6,15,0.88);
+    backdrop-filter: blur(14px);
+  }
+  .nav-item {
+    display: grid;
+    gap: 3px;
+    place-items: center;
+    padding: 4px;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--note);
+    font-size: 9px;
+  }
+  .nav-item b { font-size: 18px; font-weight: 400; line-height: 1; }
+  .nav-item.active { color: var(--lavender); }
+  .empty {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: var(--note);
+    line-height: 1.6;
+    font-size: 13px;
+  }
+  .recap-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .recap-row:last-child { border-bottom: 0; }
+  .medal { width: 22px; text-align: center; }
+  @media (max-width: 760px) {
+    body { padding: 0; place-items: stretch; }
+    .stage { display: block; width: 100%; }
+    .case-note { display: none; }
+    .phone {
+      width: 100%;
+      height: 100vh;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .phone::before { top: 12px; }
+  }
+</style>
+</head>
+<body>
+<main class="stage">
+  <section class="case-note" aria-label="Prototype context">
+    <p class="eyebrow">interactive case study</p>
+    <h1>beiwo<br>睡了么</h1>
+    <p>A social sleep habit app where friends virtually crawl into the same Beiwo. Seeing who is already in bed turns wind-down into a shared, playful ritual.</p>
+    <div class="mini-stats">
+      <div class="mini-stat"><strong>4</strong><span>Beiwo mates</span></div>
+      <div class="mini-stat"><strong>11 PM</strong><span>shared goal</span></div>
+      <div class="mini-stat"><strong>7</strong><span>day streak</span></div>
+    </div>
+  </section>
+
+  <section class="phone" aria-label="beiwo app prototype">
+    <div class="app" id="app">
+      <div class="status"><span id="statusTime">10:42 PM</span><span>●●●</span></div>
+
+      <section class="screen active" id="home">
+        <div class="top-row">
+          <div>
+            <div class="brand" id="brandName">beiwo</div>
+            <div class="date" id="todayText">Thursday · March 13</div>
+          </div>
+          <button class="icon-btn" data-open="create" aria-label="Create Beiwo">＋</button>
+        </div>
+        <div class="hero-time" id="heroTime">10:42</div>
+        <div class="banner" id="banner">
+          <div>🌙</div>
+          <div><strong id="bannerTitle">LT crawled into Beiwo</strong><span id="bannerSub">Night Owls · still up?</span></div>
+        </div>
+        <div class="nest-card">
+          <div class="nest-head">
+            <div class="nest-title"><span class="live-dot"></span><span id="homeNestName">Night Owls</span></div>
+            <button class="text-btn" data-open="create">Invite</button>
+          </div>
+          <div class="member-list" id="memberList"></div>
+        </div>
+        <button class="sleep-card" id="sleepCta">
+          <div class="sleep-icon">🌛</div>
+          <div><strong id="sleepCtaTitle">Crawl into Beiwo</strong><span id="sleepCtaSub">Phone will wind down automatically</span></div>
+        </button>
+        <div class="stat-row">
+          <div class="stat"><strong id="streakStat">7</strong><span>Day streak</span></div>
+          <div class="stat"><strong>11:10</strong><span>Week avg</span></div>
+          <div class="stat"><strong id="rankStat">—</strong><span>Tonight</span></div>
+        </div>
+      </section>
+
+      <section class="screen" id="detail">
+        <div class="top-row">
+          <button class="icon-btn" data-open="home" aria-label="Back">‹</button>
+          <div class="brand">Beiwo</div>
+          <button class="icon-btn" id="simulateBtn" aria-label="Simulate friend">☾</button>
+        </div>
+        <div class="moon-wrap"><div class="moon"></div></div>
+        <div class="detail-name" id="detailNestName">Night Owls</div>
+        <div class="detail-meta" id="detailMeta">4 members · goal before 11:00 PM</div>
+        <div class="panel" style="flex:1; min-height:0; display:flex; flex-direction:column;">
+          <div class="section-label">Tonight's log</div>
+          <div class="timeline" id="timeline"></div>
+        </div>
+        <button class="primary" id="detailSleepBtn">Crawl in now</button>
+      </section>
+
+      <section class="screen" id="create">
+        <div class="top-row">
+          <button class="icon-btn" data-open="home" aria-label="Close">×</button>
+          <div class="brand">New Beiwo</div>
+          <span></span>
+        </div>
+        <div class="field">
+          <label for="nestNameInput">Beiwo name</label>
+          <input id="nestNameInput" value="Night Owls" maxlength="24" />
+        </div>
+        <div class="field">
+          <label>Pick an icon</label>
+          <div class="chips" id="emojiChips"></div>
+        </div>
+        <div class="field">
+          <label for="goalInput">Tonight's sleep goal</label>
+          <select id="goalInput">
+            <option>10:30 PM</option>
+            <option selected>11:00 PM</option>
+            <option>11:30 PM</option>
+            <option>12:00 AM</option>
+          </select>
+        </div>
+        <div class="panel">
+          <div class="section-label">Invite friends</div>
+          <div class="friend-list" id="friendList"></div>
+        </div>
+        <button class="primary" id="createNestBtn">Create Beiwo</button>
+      </section>
+
+      <section class="screen" id="morning">
+        <div class="sun-wrap"><div class="sun"></div></div>
+        <div class="detail-name" style="color:rgba(255,220,140,0.94)">Good morning</div>
+        <div class="detail-meta" id="morningDate">Friday · March 14</div>
+        <div class="summary-card" style="margin-top:18px">
+          <div class="big-emoji">☀️</div>
+          <h2 id="morningTitle">You made it in</h2>
+          <p id="morningSub">Your Beiwo was quiet by 10:46 PM.</p>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><strong id="fellAsleep">—</strong><span>In bed</span></div>
+          <div class="stat"><strong>7h 50m</strong><span>Rest window</span></div>
+          <div class="stat"><strong id="goalMet">🎯</strong><span>Goal</span></div>
+        </div>
+        <div class="panel">
+          <div class="section-label">Beiwo ranking</div>
+          <div id="recapList"></div>
+        </div>
+        <button class="primary" id="riseBtn" type="button">Rise and shine</button>
+      </section>
+
+      <section class="screen" id="history">
+        <div class="top-row"><div class="brand">History</div></div>
+        <div class="panel">
+          <div class="section-label">This week</div>
+          <div class="stat-row" style="margin-top:0">
+            <div class="stat"><strong>5/7</strong><span>Goals met</span></div>
+            <div class="stat"><strong>10:58</strong><span>Best avg</span></div>
+            <div class="stat"><strong>2nd</strong><span>Usual rank</span></div>
+          </div>
+        </div>
+        <div class="empty">Small victories, logged quietly.</div>
+      </section>
+
+      <section class="screen" id="friends">
+        <div class="top-row"><div class="brand">Friends</div><button class="icon-btn" data-open="create">＋</button></div>
+        <div class="panel">
+          <div class="section-label">Beiwo mates</div>
+          <div class="friend-list" id="friendsView"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="settings">
+        <div class="top-row"><div class="brand">Settings</div></div>
+        <div class="panel">
+          <div class="section-label">Wind down</div>
+          <div class="member"><div class="avatar in">☾</div><div class="member-main"><div class="name">Dim screen + silence notifications</div><div class="sub">Starts when you crawl in</div></div></div>
+        </div>
+        <button class="ghost" id="resetBtn">Reset prototype</button>
+      </section>
+
+      <div class="toast" id="toast"></div>
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-open="home"><b>⌂</b><span>Beiwo</span></button>
+        <button class="nav-item" data-open="history"><b>≋</b><span>History</span></button>
+        <button class="nav-item" data-open="friends"><b>♡</b><span>Friends</span></button>
+        <button class="nav-item" data-open="settings"><b>⚙</b><span>Settings</span></button>
+      </nav>
+    </div>
+  </section>
+</main>
+
+<script>
+  const app = document.querySelector("#app");
+  const screens = [...document.querySelectorAll(".screen")];
+  const navItems = [...document.querySelectorAll(".nav-item")];
+  const toast = document.querySelector("#toast");
+  const emojis = ["🌙", "⭐", "🛏", "☁️", "🌛", "✨"];
+  const allFriends = [
+    { name: "Shirley", initials: "S", sub: "12-day streak", inBed: true, time: "10:01 PM" },
+    { name: "LT", initials: "L", sub: "Avg. 11:20 PM sleep", inBed: true, time: "10:30 PM" },
+    { name: "Tiffany", initials: "T", sub: "Certified night owl", inBed: false, time: null },
+    { name: "Jolie", initials: "J", sub: "Avg. 12:45 AM sleep", inBed: false, time: null }
+  ];
+  let state = JSON.parse(localStorage.getItem("beiwo-state") || "null") || {
+    nestName: "Night Owls",
+    icon: "🌙",
+    goal: "11:00 PM",
+    selectedFriends: ["Shirley", "LT", "Tiffany"],
+    youInBed: false,
+    youTime: null,
+    morning: false,
+    members: allFriends
+  };
+
+  function save() {
+    localStorage.setItem("beiwo-state", JSON.stringify(state));
+  }
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove("show");
+    requestAnimationFrame(() => toast.classList.add("show"));
+  }
+
+  function shortTime(time) {
+    return time ? time.replace(" PM", "").replace(" AM", "") : "—";
+  }
+
+  function currentBedtime() {
+    const d = new Date();
+    let h = d.getHours();
+    let m = d.getMinutes();
+    const suffix = h >= 12 ? "PM" : "AM";
+    h = h % 12 || 12;
+    return `${h}:${String(m).padStart(2, "0")} ${suffix}`;
+  }
+
+  function openScreen(id) {
+    screens.forEach(screen => screen.classList.toggle("active", screen.id === id));
+    navItems.forEach(item => item.classList.toggle("active", item.dataset.open === id || (id === "detail" && item.dataset.open === "home")));
+    app.classList.toggle("morning", id === "morning");
+    app.classList.toggle("winddown", state.youInBed && id !== "morning");
+    render();
+  }
+
+  function invitedMembers() {
+    return state.members.filter(member => state.selectedFriends.includes(member.name));
+  }
+
+  function roster() {
+    return [...invitedMembers(), { name: "You", initials: "You", sub: state.youInBed ? "In Beiwo" : "Still up", inBed: state.youInBed, time: state.youTime, isYou: true }];
+  }
+
+  function renderMembers() {
+    const list = document.querySelector("#memberList");
+    list.innerHTML = roster().map(member => `
+      <div class="member">
+        <div class="avatar ${member.inBed ? "in" : ""}">${member.initials}</div>
+        <div class="member-main">
+          <div class="name">${member.isYou ? "You" : member.name}</div>
+          <div class="sub ${member.inBed ? "in-text" : member.isYou ? "late-text" : ""}">${member.inBed ? "In Beiwo" : member.isYou ? "Still awake" : "Not in yet"}</div>
+        </div>
+        <div class="time-text">${shortTime(member.time)}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderTimeline() {
+    const timeline = document.querySelector("#timeline");
+    const sorted = roster().slice().sort((a, b) => {
+      if (a.inBed && !b.inBed) return -1;
+      if (!a.inBed && b.inBed) return 1;
+      return (a.time || "99").localeCompare(b.time || "99");
+    });
+    timeline.innerHTML = sorted.map(member => `
+      <div class="log-row">
+        <div class="dot ${member.inBed ? "" : "empty"}">${member.inBed ? state.icon : "—"}</div>
+        <div class="log-main">
+          <div class="name">${member.inBed ? `${member.name} crawled into Beiwo` : `${member.name} still awake`}</div>
+          <div class="sub">${member.inBed ? member.time : member.isYou ? "Last call from Beiwo" : "Waiting..."}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function renderCreate() {
+    document.querySelector("#nestNameInput").value = state.nestName;
+    document.querySelector("#goalInput").value = state.goal;
+    document.querySelector("#emojiChips").innerHTML = emojis.map(emoji => `
+      <button class="chip ${emoji === state.icon ? "selected" : ""}" data-emoji="${emoji}">${emoji}</button>
+    `).join("");
+    document.querySelector("#friendList").innerHTML = allFriends.map(friend => {
+      const selected = state.selectedFriends.includes(friend.name);
+      return `
+        <button class="friend ${selected ? "selected" : ""}" data-friend="${friend.name}">
+          <div class="avatar in">${friend.initials}</div>
+          <div class="friend-main"><div class="name">${friend.name}</div><div class="sub">${friend.sub}</div></div>
+          <div class="check">${selected ? "✓" : "+"}</div>
+        </button>
+      `;
+    }).join("");
+  }
+
+  function renderFriends() {
+    document.querySelector("#friendsView").innerHTML = invitedMembers().map(friend => `
+      <div class="friend selected">
+        <div class="avatar ${friend.inBed ? "in" : ""}">${friend.initials}</div>
+        <div class="friend-main"><div class="name">${friend.name}</div><div class="sub">${friend.inBed ? `In at ${friend.time}` : friend.sub}</div></div>
+        <div class="check">${friend.inBed ? "☾" : "·"}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderMorning() {
+    const ranking = roster().filter(member => member.inBed).sort((a, b) => a.time.localeCompare(b.time));
+    const youRank = ranking.findIndex(member => member.isYou) + 1;
+    document.querySelector("#fellAsleep").textContent = shortTime(state.youTime);
+    document.querySelector("#goalMet").textContent = state.youInBed ? "🎯" : "—";
+    document.querySelector("#morningTitle").textContent = state.youInBed ? `You ranked ${youRank || ranking.length}` : "Tonight is a new try";
+    document.querySelector("#morningSub").textContent = state.youInBed ? `${state.nestName} was quiet by ${shortTime(ranking.at(-1).time)} PM.` : "Your Beiwo mates will be back tonight.";
+    document.querySelector("#recapList").innerHTML = ranking.map((member, index) => `
+      <div class="recap-row">
+        <div class="medal">${["🥇", "🥈", "🥉"][index] || "·"}</div>
+        <div class="avatar ${member.inBed ? "in" : ""}">${member.initials}</div>
+        <div class="member-main"><div class="name">${member.name}</div></div>
+        <div class="time-text">${shortTime(member.time)}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderBanner() {
+    const awake = roster().filter(member => !member.inBed);
+    const lastIn = invitedMembers().filter(member => member.inBed).at(-1);
+    const banner = document.querySelector("#banner");
+    if (!state.youInBed && lastIn) {
+      banner.classList.add("show");
+      document.querySelector("#bannerTitle").textContent = `${lastIn.name} crawled into Beiwo`;
+      document.querySelector("#bannerSub").textContent = awake.length === 1 ? `You're the last one still awake in ${state.nestName}.` : `${state.nestName} · ${awake.length} still awake`;
+    } else {
+      banner.classList.remove("show");
+    }
+  }
+
+  function render() {
+    document.querySelector("#homeNestName").textContent = `${state.icon} ${state.nestName}`;
+    document.querySelector("#detailNestName").textContent = state.nestName;
+    document.querySelector("#detailMeta").textContent = `${roster().length} members · goal before ${state.goal}`;
+    document.querySelector("#sleepCta").classList.toggle("done", state.youInBed);
+    document.querySelector("#sleepCtaTitle").textContent = state.youInBed ? "Wind down is on" : "Crawl into Beiwo";
+    document.querySelector("#sleepCtaSub").textContent = state.youInBed ? "Your friends can see you're tucked in" : "Phone will wind down automatically";
+    document.querySelector("#detailSleepBtn").textContent = state.youInBed ? "Already in Beiwo" : "Crawl in now";
+    document.querySelector("#rankStat").textContent = state.youInBed ? `#${roster().filter(member => member.inBed).sort((a, b) => a.time.localeCompare(b.time)).findIndex(member => member.isYou) + 1}` : "—";
+    renderMembers();
+    renderTimeline();
+    renderCreate();
+    renderFriends();
+    renderMorning();
+    renderBanner();
+  }
+
+  function crawlIn() {
+    if (state.youInBed) {
+      showToast("Wind down is already on. Beiwo is keeping quiet.");
+      return;
+    }
+    state.youInBed = true;
+    state.youTime = currentBedtime();
+    save();
+    render();
+    app.classList.add("winddown");
+    showToast(`You crawled into ${state.nestName}. Your phone is dimming for wind down.`);
+    setTimeout(() => openScreen("morning"), 1800);
+  }
+
+  function simulateFriend() {
+    const next = invitedMembers().find(member => !member.inBed);
+    if (!next) {
+      showToast("Everyone invited is already in Beiwo.");
+      return;
+    }
+    next.inBed = true;
+    next.time = currentBedtime();
+    save();
+    render();
+    showToast(`${next.name} crawled into Beiwo.`);
+  }
+
+  document.addEventListener("click", event => {
+    const open = event.target.closest("[data-open]");
+    if (open) openScreen(open.dataset.open);
+
+    const emoji = event.target.closest("[data-emoji]");
+    if (emoji) {
+      state.icon = emoji.dataset.emoji;
+      save();
+      render();
+    }
+
+    const friend = event.target.closest("[data-friend]");
+    if (friend) {
+      const name = friend.dataset.friend;
+      state.selectedFriends = state.selectedFriends.includes(name)
+        ? state.selectedFriends.filter(item => item !== name)
+        : [...state.selectedFriends, name];
+      save();
+      render();
+    }
+  });
+
+  document.querySelector("#sleepCta").addEventListener("click", crawlIn);
+  document.querySelector("#detailSleepBtn").addEventListener("click", crawlIn);
+  document.querySelector("#simulateBtn").addEventListener("click", simulateFriend);
+  function startNewDay(event) {
+    event?.preventDefault();
+    event?.stopPropagation();
+    state.morning = false;
+    state.youInBed = false;
+    state.youTime = null;
+    app.classList.remove("morning", "winddown");
+    save();
+    openScreen("home");
+    showToast("Good morning. Tonight's Beiwo is ready whenever you are.");
+  }
+
+  document.addEventListener("pointerup", event => {
+    if (event.target.closest("#riseBtn")) startNewDay(event);
+  }, true);
+
+  document.querySelector("#riseBtn").addEventListener("click", event => {
+    startNewDay(event);
+  });
+  document.querySelector("#resetBtn").addEventListener("click", () => {
+    localStorage.removeItem("beiwo-state");
+    location.reload();
+  });
+  document.querySelector("#createNestBtn").addEventListener("click", () => {
+    state.nestName = document.querySelector("#nestNameInput").value.trim() || "Night Owls";
+    state.goal = document.querySelector("#goalInput").value;
+    save();
+    openScreen("home");
+    showToast(`${state.nestName} is ready. Invitations sent.`);
+  });
+  document.querySelector("#nestNameInput").addEventListener("input", event => {
+    state.nestName = event.target.value;
+    save();
+  });
+  document.querySelector("#goalInput").addEventListener("change", event => {
+    state.goal = event.target.value;
+    save();
+  });
+
+  render();
+
+  // ?solo=1 — show phone only, reset to fresh home state
+  if (new URLSearchParams(location.search).get('solo')) {
+    // Hide left text panel
+    const note = document.querySelector('.case-note');
+    const stage = document.querySelector('.stage');
+    if (note)  note.style.display = 'none';
+    if (stage) {
+      stage.style.gridTemplateColumns = '1fr';
+      stage.style.justifyItems = 'center';
+    }
+    // Zero out body padding so phone fills the iframe fully
+    document.body.style.padding = '0';
+
+    // Always reset to fresh home state (youInBed = false, home screen)
+    localStorage.removeItem('beiwo-state');
+    state.youInBed = false;
+    state.youTime  = null;
+    state.morning  = false;
+    state.members  = state.members.map(m => ({ ...m, inBed: m.name === 'LT', time: m.name === 'LT' ? '10:30 PM' : null }));
+    openScreen('home');
+    render();
+  }
+</script>
+</body>
+</html>

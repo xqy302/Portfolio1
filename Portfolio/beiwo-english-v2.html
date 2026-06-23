@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>beiwo — English Wireframes v2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --lavender: #c4b5e8; --deep: #2e1f5e; --glow: #e8dff7;
+    --gold: #d4a853; --note: #9b8fc2; --green: #6ddb8b;
+  }
+  body {
+    background: #0a0812; font-family: 'Inter', sans-serif;
+    color: #faf9ff; min-height: 100vh; padding: 50px 24px 100px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .page-header { text-align: center; margin-bottom: 70px; }
+  .page-header .tag { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--note); margin-bottom: 10px; }
+  .page-header h1 { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--glow); font-style: italic; }
+  .page-header p { font-size: 12px; color: var(--note); margin-top: 10px; letter-spacing: 0.05em; }
+
+  .section-block { width: 100%; max-width: 1300px; margin-bottom: 80px; }
+  .section-title { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+  .section-title .num { font-family: 'DM Serif Display', serif; font-size: 42px; color: rgba(196,181,232,0.15); line-height: 1; }
+  .section-title .info h2 { font-size: 18px; color: var(--glow); font-weight: 400; }
+  .section-title .info p { font-size: 11px; color: var(--note); margin-top: 3px; letter-spacing: 0.05em; }
+
+  .screens-row { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+  .screen-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .screen-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(155,143,194,0.5); }
+
+  .phone {
+    width: 260px; height: 540px; background: #13101f;
+    border-radius: 36px; border: 1.5px solid rgba(196,181,232,0.18);
+    box-shadow: 0 0 0 5px #08060f, 0 0 50px rgba(124,106,173,0.12);
+    position: relative; overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .phone:hover { transform: translateY(-4px); box-shadow: 0 0 0 5px #08060f, 0 16px 60px rgba(124,106,173,0.28); }
+  .phone::before { content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 70px; height: 18px; background: #08060f; border-radius: 14px; z-index: 100; }
+  .sc { width: 100%; height: 100%; padding: 38px 0 0; position: relative; overflow: hidden; }
+
+  .status-bar { display: flex; justify-content: space-between; padding: 0 18px; font-size: 9px; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 0 12px; display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(10,8,18,0.9); backdrop-filter: blur(10px); }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 8px; color: var(--note); }
+  .nav-item.active { color: var(--lavender); }
+  .nav-icon { font-size: 16px; }
+  .back-row { display: flex; align-items: center; gap: 8px; padding: 6px 18px 0; }
+  .back-btn { font-size: 16px; color: var(--note); }
+  .screen-head-title { font-size: 14px; color: var(--glow); font-weight: 400; }
+  .step-pill { display: flex; gap: 5px; justify-content: center; padding: 8px 0 4px; }
+  .step-dot { width: 20px; height: 3px; border-radius: 4px; background: rgba(196,181,232,0.15); }
+  .step-dot.active { background: var(--lavender); }
+  .step-dot.done { background: rgba(196,181,232,0.4); }
+
+  .bg-deep { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 70% at 50% 110%, #2e1f5e 0%, #0f0b1a 60%); }
+  .create-inner { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
+  .create-body { flex: 1; padding: 10px 18px 0; overflow: hidden; }
+
+  .field-label { font-size: 10px; color: var(--note); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .text-input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(196,181,232,0.25); border-radius: 12px; padding: 11px 14px; font-size: 14px; color: var(--glow); margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+  .text-input .placeholder { color: rgba(196,181,232,0.3); font-size: 12px; }
+  .cursor { width: 1.5px; height: 14px; background: var(--lavender); animation: blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+  .emoji-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .emoji-chip { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(196,181,232,0.12); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .emoji-chip.selected { background: rgba(124,106,173,0.25); border-color: var(--lavender); box-shadow: 0 0 12px rgba(196,181,232,0.2); }
+
+  .goal-row { background: rgba(255,255,255,0.03); border: 1px solid rgba(196,181,232,0.1); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; }
+  .goal-row .lbl { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .goal-row .val { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--gold); }
+
+  .next-btn { margin: 14px 18px; background: linear-gradient(135deg, #3d2870, #5a3d9e); border: 1px solid rgba(196,181,232,0.2); border-radius: 14px; padding: 13px; text-align: center; font-size: 14px; color: var(--glow); }
+
+  .invite-search { display: flex; gap: 8px; margin-bottom: 14px; }
+  .search-box { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(196,181,232,0.2); border-radius: 10px; padding: 9px 12px; font-size: 11px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px; }
+
+  .friend-list { display: flex; flex-direction: column; gap: 8px; }
+  .friend-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); }
+  .friend-row.invited { background: rgba(46,31,94,0.3); border-color: rgba(196,181,232,0.2); }
+  .f-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; background: linear-gradient(135deg, #2e1f5e, #4a3580); border: 1.5px solid rgba(196,181,232,0.2); color: var(--lavender); flex-shrink: 0; }
+  .f-info { flex: 1; }
+  .f-name { font-size: 12px; color: rgba(255,255,255,0.75); }
+  .f-sub { font-size: 10px; color: var(--note); margin-top: 1px; }
+  .check-btn { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+  .check-btn.add { border: 1.5px solid rgba(196,181,232,0.3); color: var(--note); }
+  .check-btn.done { background: var(--lavender); color: #1a1625; font-size: 12px; }
+
+  .confirm-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(196,181,232,0.15); border-radius: 16px; padding: 16px; margin-bottom: 14px; text-align: center; }
+  .confirm-emoji { font-size: 36px; margin-bottom: 6px; }
+  .confirm-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--glow); margin-bottom: 4px; font-style: italic; }
+  .confirm-meta { font-size: 10px; color: var(--note); }
+  .confirm-detail-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .conf-pill { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(196,181,232,0.1); border-radius: 10px; padding: 8px 10px; text-align: center; }
+  .conf-pill .v { font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--gold); }
+  .conf-pill .l { font-size: 9px; color: var(--note); margin-top: 2px; }
+  .create-btn { background: linear-gradient(135deg, #3d2870, #5a3d9e); border: 1px solid rgba(196,181,232,0.25); border-radius: 14px; padding: 14px; text-align: center; font-size: 15px; color: var(--glow); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
+
+  /* NOTIFICATIONS */
+  .lockscreen { position: absolute; inset: 0; background: radial-gradient(ellipse 100% 60% at 50% 0%, #2a1d4e 0%, #0a0812 70%); display: flex; flex-direction: column; align-items: center; }
+  .ls-time { font-family: 'DM Serif Display', serif; font-size: 52px; font-weight: 300; color: rgba(255,255,255,0.85); text-align: center; margin-top: 60px; line-height: 1; }
+  .ls-date { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-top: 4px; }
+
+  .notif-card { width: calc(100% - 28px); margin: 20px 14px 0; background: rgba(255,255,255,0.07); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 14px; }
+  .notif-card.urgent { border-color: rgba(212,168,83,0.3); background: rgba(46,31,94,0.5); }
+  .notif-card + .notif-card { margin-top: 8px; }
+  .notif-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .notif-app-icon { width: 20px; height: 20px; border-radius: 6px; background: linear-gradient(135deg, #3d2870, #5a3d9e); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .notif-app-name { font-size: 10px; color: rgba(255,255,255,0.45); flex: 1; }
+  .notif-time-small { font-size: 10px; color: rgba(255,255,255,0.3); }
+  .notif-body-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 3px; }
+  .notif-body-sub { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+  .notif-body-sub .highlight { color: var(--lavender); }
+  .notif-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .notif-action { flex: 1; padding: 7px 0; border-radius: 8px; text-align: center; font-size: 11px; font-weight: 500; }
+  .notif-action.primary { background: rgba(124,106,173,0.3); color: var(--lavender); border: 1px solid rgba(196,181,232,0.2); }
+  .notif-action.secondary { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+
+  .inapp-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 70% at 50% 110%, #2e1f5e 0%, #0f0b1a 60%); }
+  .inapp-inner { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
+  .inapp-banner { margin: 8px 14px 0; background: rgba(46,31,94,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(212,168,83,0.3); border-radius: 14px; padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px; box-shadow: 0 4px 20px rgba(212,168,83,0.1); }
+  .banner-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .banner-text { flex: 1; }
+  .banner-text .btitle { font-size: 12px; font-weight: 500; color: var(--glow); }
+  .banner-text .bsub { font-size: 10px; color: var(--note); margin-top: 2px; line-height: 1.4; }
+  .banner-close { font-size: 14px; color: var(--note); }
+  .stub-home { padding: 6px 18px 0; flex: 1; }
+  .stub-greeting { font-size: 13px; color: rgba(255,255,255,0.2); margin-bottom: 8px; }
+  .stub-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; height: 90px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.08); font-size: 11px; margin-bottom: 8px; }
+  .stub-card.tall { height: 120px; }
+
+  /* MORNING */
+  .morning-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% -10%, #4a2f10 0%, #1a0f08 40%, #0f0b1a 80%); }
+  .morning-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle 200px at 50% -30%, rgba(255,200,80,0.15), transparent 60%); }
+  .morning-inner { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
+  .sun-area { display: flex; flex-direction: column; align-items: center; padding: 8px 0 6px; }
+  .sun { width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #fff4c2, #f0a830 50%, #d4751a); box-shadow: 0 0 30px rgba(240,168,48,0.5), 0 0 80px rgba(240,168,48,0.15); }
+  .morning-greeting { font-size: 17px; font-weight: 400; color: rgba(255,220,140,0.9); margin-top: 8px; letter-spacing: 0.05em; }
+  .morning-date { font-size: 10px; color: rgba(255,200,100,0.4); margin-top: 3px; }
+
+  .sleep-summary { margin: 10px 14px 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,200,100,0.12); border-radius: 18px; padding: 14px 16px; }
+  .ss-header { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,200,100,0.4); margin-bottom: 10px; }
+  .ss-stats { display: flex; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,200,100,0.08); }
+  .ss-stat { flex: 1; padding: 10px 8px; text-align: center; border-right: 1px solid rgba(255,200,100,0.08); background: rgba(255,255,255,0.02); }
+  .ss-stat:last-child { border-right: none; }
+  .ss-stat .v { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gold); }
+  .ss-stat .l { font-size: 9px; color: rgba(255,200,100,0.4); margin-top: 2px; }
+
+  .beiwo-recap { margin: 10px 14px 0; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 12px 14px; }
+  .recap-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .recap-title { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .recap-badge { font-size: 10px; color: var(--gold); border: 1px solid rgba(212,168,83,0.3); border-radius: 20px; padding: 2px 8px; }
+  .recap-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .recap-row:last-child { border-bottom: none; }
+  .recap-medal { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+  .recap-av { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #2e1f5e, #4a3580); border: 1px solid rgba(196,181,232,0.2); display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--lavender); flex-shrink: 0; }
+  .recap-name { font-size: 11px; color: rgba(255,255,255,0.6); flex: 1; }
+  .recap-time { font-family: 'DM Serif Display', serif; font-size: 13px; color: rgba(255,200,100,0.7); }
+  .wakeup-btn { margin: 10px 14px 0; background: linear-gradient(135deg, #5a3010, #8a5018); border: 1px solid rgba(212,168,83,0.25); border-radius: 16px; padding: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: rgba(255,220,140,0.9); }
+
+  /* ANNOTATIONS */
+  .ann-col { display: flex; flex-direction: column; gap: 8px; width: 220px; padding-top: 8px; }
+  .ann-item { display: flex; gap: 8px; align-items: flex-start; }
+  .ann-num { width: 16px; height: 16px; border-radius: 50%; background: rgba(196,181,232,0.12); border: 1px solid rgba(196,181,232,0.25); display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--lavender); flex-shrink: 0; margin-top: 1px; }
+  .ann-text { font-size: 10.5px; color: var(--note); line-height: 1.5; }
+  .ann-text strong { color: rgba(255,255,255,0.55); font-weight: 500; }
+
+  .arrow-connector { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 6px; margin-top: 50px; color: rgba(196,181,232,0.2); font-size: 20px; gap: 4px; }
+  .arrow-connector span { font-size: 8px; color: rgba(155,143,194,0.35); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  hr.divider { width: 100%; max-width: 1300px; border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0 0 70px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="tag">beiwo · Sleep Together — English Wireframes v2</div>
+  <h1>Three Flows</h1>
+  <p>Create a Nest · Notifications · Morning Rise</p>
+</div>
+
+<!-- ====== FLOW A: CREATE ====== -->
+<div class="section-block">
+  <div class="section-title">
+    <div class="num">A</div>
+    <div class="info">
+      <h2>Create a Nest · Invite Friends</h2>
+      <p>3-step flow — Name → Invite → Confirm</p>
+    </div>
+  </div>
+  <div class="screens-row">
+
+    <!-- Step 1 -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="sc">
+          <div class="bg-deep"></div>
+          <div class="create-inner">
+            <div class="status-bar"><span>10:55 PM</span><span>●●●</span></div>
+            <div class="back-row"><div class="back-btn">‹</div><div class="screen-head-title">New Nest</div></div>
+            <div class="step-pill"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+            <div class="create-body">
+              <div class="field-label">Nest Name</div>
+              <div class="text-input"><span>Night Owls</span><div class="cursor"></div></div>
+              <div class="field-label" style="margin-bottom:10px">Pick an icon</div>
+              <div class="emoji-grid">
+                <div class="emoji-chip selected">🌙</div>
+                <div class="emoji-chip">⭐</div>
+                <div class="emoji-chip">🛏</div>
+                <div class="emoji-chip">🐑</div>
+                <div class="emoji-chip">☁️</div>
+                <div class="emoji-chip">🌛</div>
+              </div>
+              <div class="field-label">Tonight's sleep goal</div>
+              <div class="goal-row"><div class="lbl">Target time</div><div class="val">11:00 PM</div></div>
+            </div>
+            <div class="next-btn">Next →</div>
+            <div style="height:8px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Step 1 · Set up the nest</div>
+    </div>
+
+    <div class="arrow-connector">→<span>next</span></div>
+
+    <!-- Step 2 -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="sc">
+          <div class="bg-deep"></div>
+          <div class="create-inner">
+            <div class="status-bar"><span>10:55 PM</span><span>●●●</span></div>
+            <div class="back-row"><div class="back-btn">‹</div><div class="screen-head-title">Invite Friends</div></div>
+            <div class="step-pill"><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div></div>
+            <div class="create-body">
+              <div class="invite-search">
+                <div class="search-box"><span>🔍</span><span>Search friends…</span></div>
+              </div>
+              <div class="friend-list">
+                <div class="friend-row invited">
+                  <div class="f-avatar">Lin</div>
+                  <div class="f-info"><div class="f-name">Lin</div><div class="f-sub">12-day streak 🔥</div></div>
+                  <div class="check-btn done">✓</div>
+                </div>
+                <div class="friend-row invited">
+                  <div class="f-avatar">Amy</div>
+                  <div class="f-info"><div class="f-name">Amy</div><div class="f-sub">Avg. 11:20 PM sleep</div></div>
+                  <div class="check-btn done">✓</div>
+                </div>
+                <div class="friend-row">
+                  <div class="f-avatar">Felix</div>
+                  <div class="f-info"><div class="f-name">Felix</div><div class="f-sub">Certified night owl 🦉</div></div>
+                  <div class="check-btn add">+</div>
+                </div>
+                <div class="friend-row">
+                  <div class="f-avatar">Jo</div>
+                  <div class="f-info"><div class="f-name">Jo</div><div class="f-sub">Avg. 12:45 AM sleep</div></div>
+                  <div class="check-btn add">+</div>
+                </div>
+              </div>
+            </div>
+            <div class="next-btn" style="margin-top:10px">Next (2 invited) →</div>
+            <div style="height:8px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Step 2 · Invite friends</div>
+    </div>
+
+    <div class="arrow-connector">→<span>next</span></div>
+
+    <!-- Step 3 -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="sc">
+          <div class="bg-deep"></div>
+          <div class="create-inner">
+            <div class="status-bar"><span>10:56 PM</span><span>●●●</span></div>
+            <div class="back-row"><div class="back-btn">‹</div><div class="screen-head-title">Confirm</div></div>
+            <div class="step-pill"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div></div>
+            <div class="create-body">
+              <div class="confirm-card">
+                <div class="confirm-emoji">🌙</div>
+                <div class="confirm-name">Night Owls</div>
+                <div class="confirm-meta">You + 2 friends</div>
+                <div style="display:flex;justify-content:center;gap:4px;margin-top:12px">
+                  <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#2e1f5e,#4a3580);border:2px solid #13101f;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--lavender)">You</div>
+                  <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#2e1f5e,#4a3580);border:2px solid #13101f;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--lavender);margin-left:-6px">Lin</div>
+                  <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#2e1f5e,#4a3580);border:2px solid #13101f;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--lavender);margin-left:-6px">Amy</div>
+                </div>
+              </div>
+              <div class="confirm-detail-row">
+                <div class="conf-pill"><div class="v">11 PM</div><div class="l">Tonight's goal</div></div>
+                <div class="conf-pill"><div class="v">3</div><div class="l">Members</div></div>
+                <div class="conf-pill"><div class="v">🌙</div><div class="l">Icon</div></div>
+              </div>
+              <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:10px 12px;margin-bottom:12px">
+                <div style="font-size:10px;color:var(--note);line-height:1.6">Invites will be sent via <span style="color:var(--lavender)">beiwo</span>. Once accepted, you'll all notify each other when crawling in 🛏</div>
+              </div>
+              <div class="create-btn">🌙 &nbsp;Create Nest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Step 3 · Confirm</div>
+    </div>
+
+    <div class="ann-col" style="margin-top:50px">
+      <div class="ann-item"><div class="ann-num">A1</div><div class="ann-text"><strong>Name + emoji</strong> — personalization gives the nest a sense of identity and belonging</div></div>
+      <div class="ann-item"><div class="ann-num">A2</div><div class="ann-text"><strong>Tonight's goal</strong> — each nest sets its own target, creating a shared commitment</div></div>
+      <div class="ann-item"><div class="ann-num">A3</div><div class="ann-text"><strong>Friend sleep stats</strong> — showing avg sleep times in the invite list adds a fun social layer</div></div>
+      <div class="ann-item"><div class="ann-num">A4</div><div class="ann-text"><strong>3-step flow</strong> — progress bar keeps it lightweight; creation shouldn't feel like homework</div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== FLOW B: NOTIFICATIONS ====== -->
+<div class="section-block">
+  <div class="section-title">
+    <div class="num">B</div>
+    <div class="info">
+      <h2>Notification Design</h2>
+      <p>Lock screen push · In-app banner · Two scenarios</p>
+    </div>
+  </div>
+  <div class="screens-row">
+
+    <!-- Lock screen -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="sc">
+          <div class="lockscreen">
+            <div class="ls-time">10:31</div>
+            <div class="ls-date">Thursday · March 13</div>
+            <div class="notif-card urgent">
+              <div class="notif-top">
+                <div class="notif-app-icon">🛏</div>
+                <div class="notif-app-name">beiwo</div>
+                <div class="notif-time-small">just now</div>
+              </div>
+              <div class="notif-body-title">Amy crawled in 🌙</div>
+              <div class="notif-body-sub">You're <span class="highlight">the last one</span> still awake in Night Owls…</div>
+              <div class="notif-actions">
+                <div class="notif-action primary">Crawl in</div>
+                <div class="notif-action secondary">Not yet</div>
+              </div>
+            </div>
+            <div class="notif-card" style="margin-top:8px">
+              <div class="notif-top">
+                <div class="notif-app-icon">🛏</div>
+                <div class="notif-app-name">beiwo</div>
+                <div class="notif-time-small">10:01 PM</div>
+              </div>
+              <div class="notif-body-title">Lin crawled in 😴</div>
+              <div class="notif-body-sub">Night Owls · 10:01 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Lock Screen Notification</div>
+    </div>
+
+    <div class="arrow-connector" style="margin-top:100px">·<br><span>or</span></div>
+
+    <!-- In-app banner -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="sc">
+          <div class="inapp-bg"></div>
+          <div class="inapp-inner">
+            <div class="status-bar"><span>10:44 PM</span><span>●●●</span></div>
+            <div class="inapp-banner">
+              <div class="banner-icon">🌙</div>
+              <div class="banner-text">
+                <div class="btitle">Amy crawled into the nest</div>
+                <div class="bsub">Night Owls · 10:30 PM · Still up?</div>
+              </div>
+              <div class="banner-close">✕</div>
+            </div>
+            <div class="stub-home">
+              <div class="stub-greeting">Home</div>
+              <div class="stub-card">(Nest card)</div>
+              <div class="stub-card tall">(Sleep CTA)</div>
+              <div class="stub-card" style="height:50px">(Stats)</div>
+            </div>
+            <div class="bottom-nav">
+              <div class="nav-item active"><span class="nav-icon">🛏</span><span>Nest</span></div>
+              <div class="nav-item"><span class="nav-icon">📊</span><span>History</span></div>
+              <div class="nav-item"><span class="nav-icon">👥</span><span>Friends</span></div>
+              <div class="nav-item"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">In-App Banner</div>
+    </div>
+
+    <div class="ann-col" style="margin-top:30px">
+      <div class="ann-item"><div class="ann-num">B1</div><div class="ann-text"><strong>Lock screen quick action</strong> — "Crawl in" directly from the notification, no unlock needed</div></div>
+      <div class="ann-item"><div class="ann-num">B2</div><div class="ann-text"><strong>Tiered copy</strong> — first person in: plain notification; last person in: highlighted "you're the last one"</div></div>
+      <div class="ann-item"><div class="ann-num">B3</div><div class="ann-text"><strong>Notification stacking</strong> — multiple entries from the same nest stack together to reduce noise</div></div>
+      <div class="ann-item"><div class="ann-num">B4</div><div class="ann-text"><strong>In-app banner</strong> — top banner while using the app; doesn't force interrupt current action</div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== FLOW C: MORNING ====== -->
+<div class="section-block">
+  <div class="section-title">
+    <div class="num">C</div>
+    <div class="info">
+      <h2>Morning Rise</h2>
+      <p>Sleep recap · Last night's ranking · Start a new day</p>
+    </div>
+  </div>
+  <div class="screens-row">
+
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="sc">
+          <div class="morning-bg"></div>
+          <div class="morning-inner">
+            <div class="status-bar"><span>7:32 AM</span><span>●●●</span></div>
+            <div class="sun-area">
+              <div class="sun"></div>
+              <div class="morning-greeting">Good morning ☀️</div>
+              <div class="morning-date">Friday · March 14</div>
+            </div>
+            <div class="sleep-summary">
+              <div class="ss-header">Last night</div>
+              <div class="ss-stats">
+                <div class="ss-stat"><div class="v">10:42</div><div class="l">Fell asleep</div></div>
+                <div class="ss-stat"><div class="v">7h 50m</div><div class="l">Duration</div></div>
+                <div class="ss-stat"><div class="v">🎯</div><div class="l">Goal met</div></div>
+              </div>
+            </div>
+            <div class="beiwo-recap">
+              <div class="recap-header">
+                <div class="recap-title">Night Owls · Last night</div>
+                <div class="recap-badge">You ranked 2nd 🥈</div>
+              </div>
+              <div class="recap-row">
+                <div class="recap-medal">🥇</div>
+                <div class="recap-av">Lin</div>
+                <div class="recap-name">Lin</div>
+                <div class="recap-time">10:01 PM</div>
+              </div>
+              <div class="recap-row">
+                <div class="recap-medal">🥈</div>
+                <div class="recap-av" style="background:linear-gradient(135deg,#5a3d9e,#7c6aad);border-color:rgba(212,168,83,0.4)">You</div>
+                <div class="recap-name" style="color:rgba(255,220,140,0.7)">You</div>
+                <div class="recap-time">10:42 PM</div>
+              </div>
+              <div class="recap-row">
+                <div class="recap-medal">🥉</div>
+                <div class="recap-av">Amy</div>
+                <div class="recap-name">Amy</div>
+                <div class="recap-time">11:15 PM</div>
+              </div>
+            </div>
+            <div class="wakeup-btn">☀️ &nbsp;Rise and shine — start the day</div>
+            <div style="height:56px"></div>
+            <div class="bottom-nav">
+              <div class="nav-item active"><span class="nav-icon">🛏</span><span>Nest</span></div>
+              <div class="nav-item"><span class="nav-icon">📊</span><span>History</span></div>
+              <div class="nav-item"><span class="nav-icon">👥</span><span>Friends</span></div>
+              <div class="nav-item"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Morning · Rise Screen</div>
+    </div>
+
+    <div class="ann-col" style="margin-top:40px">
+      <div class="ann-item"><div class="ann-num">C1</div><div class="ann-text"><strong>Warm dawn palette</strong> — contrasts with the deep night blue; signals a new chapter visually</div></div>
+      <div class="ann-item"><div class="ann-num">C2</div><div class="ann-text"><strong>Sleep summary</strong> — sleep time, duration, and goal status; quick and scannable</div></div>
+      <div class="ann-item"><div class="ann-num">C3</div><div class="ann-text"><strong>Nest ranking</strong> — who slept earliest? 🥇🥈🥉 medals add light gamification without pressure</div></div>
+      <div class="ann-item"><div class="ann-num">C4</div><div class="ann-text"><strong>Rise CTA</strong> — actively "leaving" the nest completes the loop and primes tomorrow</div></div>
+      <div class="ann-item"><div class="ann-num">C5</div><div class="ann-text"><strong>Streak carry-over</strong> — morning screen is a natural place to show the running early-sleep streak</div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
