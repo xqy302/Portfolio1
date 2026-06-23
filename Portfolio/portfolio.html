@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sophia — Product Designer</title>
+  <title>Sophia Xu — Product Designer</title>
+  <script>if(sessionStorage.getItem('sx-auth')!=='1'){window.location.replace('index.html');}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&display=swap" rel="stylesheet">
   <style>
     /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -93,38 +96,30 @@
                   radial-gradient(ellipse 50% 40% at 90% 80%, rgba(247,107,21,0.10) 0%, transparent 60%),
                   radial-gradient(ellipse 40% 35% at 5% 70%, rgba(171,74,186,0.07) 0%, transparent 60%);
     }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--purple-xl); color: var(--purple);
-      font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 20px;
-      margin-bottom: 28px; letter-spacing: 0.2px;
-      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.2s forwards;
-    }
-    .hero-badge-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--purple); display: inline-block;
-      animation: pulse 2s ease-in-out infinite;
-    }
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.5; transform: scale(0.85); }
     }
-    .hero-headline {
-      font-size: clamp(24px, 3.2vw, 38px);
-      font-weight: 700; letter-spacing: -0.03em; line-height: 1.15;
-      color: var(--black);
-      opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.35s forwards;
+    .hero-eyebrow {
+      font-size: 28px; line-height: 1; margin-bottom: 16px;
+      opacity: 0; animation: fadeUp 0.7s var(--ease-out) 0.1s forwards;
     }
-    .hero-headline em {
-      font-style: normal;
+    .hero-name {
+      font-family: 'Literata', Georgia, serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; letter-spacing: -0.02em; line-height: 1.08;
+      color: #211f26;
+      opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.25s forwards;
+    }
+    .hero-name .name-highlight {
       background: linear-gradient(135deg, var(--purple) 0%, #c95ed4 40%, var(--yellow) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     .hero-subline {
-      margin-top: 24px; font-size: clamp(16px, 1.5vw, 19px);
-      color: var(--gray-2); line-height: 1.75; max-width: 440px;
-      opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.5s forwards;
+      margin-top: 20px; font-size: clamp(15px, 1.35vw, 17px);
+      color: var(--gray-2); line-height: 1.75; max-width: 420px;
+      opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.45s forwards;
     }
     .hero-actions {
       margin-top: 40px; display: flex; gap: 16px; align-items: center;
@@ -150,7 +145,7 @@
     .btn-secondary:hover { gap: 10px; }
     .btn-secondary::after { content: '→'; }
     .hero-scroll-hint {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
       font-size: 12px; color: var(--gray-3); letter-spacing: 0.8px; text-transform: uppercase;
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       opacity: 0; animation: fadeUp 1s var(--ease-out) 1.2s forwards;
@@ -191,7 +186,7 @@
       position: relative; border-radius: 28px; overflow: hidden;
       box-shadow: 0 24px 64px rgba(0,0,0,0.18);
       aspect-ratio: 3 / 4;
-      width: 100%; max-width: 420px;
+      width: 100%; max-width: 340px;
       margin: 0 auto;
     }
     .compare-slider {
@@ -413,53 +408,60 @@
     .row-line { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.15); flex: 1; }
     .row-num { font-size: 10px; color: rgba(255,255,255,0.5); margin-left: 8px; white-space: nowrap; }
 
-    /* Case 2 — Bloom */
-    .cv-bloom {
-      background: linear-gradient(135deg, #ECFDF5, #D1FAE5, #A7F3D0);
+    /* Case 2 — Beiwo */
+    .cv-beiwo {
+      background: linear-gradient(135deg, #0a0812, #1a1035, #2e1f5e);
     }
-    .cv-bloom .phone-wrap { position: relative; }
-    .cv-bloom .phone {
-      width: 180px; height: 340px; background: white;
-      border-radius: 36px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      overflow: hidden; padding: 24px 16px;
+    .beiwo-mockup {
+      width: 200px; height: 340px;
+      background: rgba(196,181,232,0.05);
+      border-radius: 28px; border: 1px solid rgba(196,181,232,0.14);
+      padding: 22px 18px; position: relative; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(46,31,94,0.5);
     }
-    .bloom-header {
-      display: flex; justify-content: space-between; margin-bottom: 16px;
+    .beiwo-mockup-glow {
+      position: absolute; top: -40px; right: -40px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,181,232,0.12) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .bloom-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple), var(--yellow));
+    .beiwo-top-bar {
+      height: 5px; border-radius: 3px; margin-bottom: 12px;
+      background: linear-gradient(90deg, #c4b5e8 0%, #6b4fa8 60%, rgba(196,181,232,0.2) 100%);
     }
-    .bloom-greeting { font-size: 8px; color: #6B7280; line-height: 1.4; }
-    .bloom-greeting b { display: block; font-size: 10px; color: #111; }
-    .bloom-card {
-      background: linear-gradient(135deg, #ab4aba, #d49de9);
-      border-radius: 16px; padding: 14px 12px; margin-bottom: 14px;
-      color: white;
+    .beiwo-lbl-line {
+      height: 5px; border-radius: 3px; margin-bottom: 8px;
+      background: rgba(196,181,232,0.12);
     }
-    .bloom-card-label { font-size: 7px; opacity: 0.7; margin-bottom: 4px; }
-    .bloom-card-value { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
-    .bloom-card-sub { font-size: 7px; opacity: 0.6; margin-top: 2px; }
-    .bloom-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-    .bloom-pill {
-      font-size: 7px; padding: 3px 8px; border-radius: 10px;
-      background: var(--purple-xl); color: var(--purple); font-weight: 600;
+    .beiwo-lbl-line.short { width: 55%; margin-bottom: 20px; }
+    .beiwo-member-row {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 0; border-bottom: 1px solid rgba(196,181,232,0.06);
     }
-    .bloom-pill.active { background: var(--purple); color: white; }
-    .bloom-list-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 0; border-bottom: 1px solid #F3F4F6;
-    }
-    .bli-icon {
-      width: 22px; height: 22px; border-radius: 8px;
-      background: var(--purple-xl); flex-shrink: 0;
+    .beiwo-member-row:last-child { border-bottom: none; }
+    .beiwo-av-dot {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
+      font-size: 8px; font-weight: 600; color: rgba(196,181,232,0.9);
+      border: 1px solid rgba(196,181,232,0.2);
     }
-    .bli-text { flex: 1; }
-    .bli-label { font-size: 8px; color: #111; font-weight: 500; }
-    .bli-sub { font-size: 7px; color: #9CA3AF; }
-    .bli-val { font-size: 9px; font-weight: 600; color: #10B981; }
+    .beiwo-name-bar { flex: 1; height: 5px; border-radius: 3px; background: rgba(196,181,232,0.1); }
+    .beiwo-status-badge {
+      font-size: 8px; padding: 2px 7px; border-radius: 8px; white-space: nowrap;
+    }
+    .beiwo-status-badge.asleep {
+      background: rgba(109,219,139,0.15); color: rgba(109,219,139,0.9);
+      border: 1px solid rgba(109,219,139,0.2);
+    }
+    .beiwo-status-badge.waiting {
+      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .beiwo-moon-label {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 16px;
+    }
+    .beiwo-moon-text { font-size: 9px; color: rgba(212,168,83,0.7); letter-spacing: 0.08em; }
+    .beiwo-moon-line { flex: 1; height: 1px; background: rgba(212,168,83,0.15); }
 
     /* Case 3 — Nexus */
     .cv-nexus {
@@ -753,11 +755,10 @@
       <!-- Left: identity + bio + CTAs -->
       <div class="hero-left">
 
-        <h1 class="hero-headline">
-          Product designer<br>shaping human-centered<br><em>AI systems.</em>
-        </h1>
+        <div class="hero-eyebrow">🌻</div>
+        <h1 class="hero-name">I'm <span class="name-highlight">Sophia Xu,</span></h1>
         <p class="hero-subline">
-          Bringing clarity to ambiguity through structured thinking and emotionally grounded design.
+          A Product Designer shaping human-centered AI experiences that help people navigate complexity with clarity, confidence, and care.
         </p>
         <div class="hero-actions">
           <a href="#work" class="btn-primary">View my work</a>
@@ -866,128 +867,63 @@
 
         <!-- Case 1 -->
         <div class="case-card reveal">
-          <div class="case-visual cv-fintrack">
+          <div class="case-visual cv-beiwo">
             <div class="case-visual-inner">
-              <div class="mockup">
-                <div class="mockup-bar"></div>
-                <div class="mockup-bar"></div>
-                <div class="mockup-bar"></div>
-                <div class="mockup-chart">
-                  <div class="chart-col" style="height:40%"></div>
-                  <div class="chart-col" style="height:60%"></div>
-                  <div class="chart-col" style="height:45%"></div>
-                  <div class="chart-col active" style="height:80%"></div>
-                  <div class="chart-col" style="height:55%"></div>
-                  <div class="chart-col" style="height:70%"></div>
-                  <div class="chart-col active" style="height:90%"></div>
+              <div class="beiwo-mockup">
+                <div class="beiwo-mockup-glow"></div>
+                <div class="beiwo-top-bar"></div>
+                <div class="beiwo-lbl-line"></div>
+                <div class="beiwo-lbl-line short"></div>
+                <div class="beiwo-moon-label">
+                  <span style="font-size:11px">🌙</span>
+                  <div class="beiwo-moon-line"></div>
+                  <div class="beiwo-moon-text">10:30 PM</div>
                 </div>
-                <div class="mockup-row">
-                  <div class="row-dot"></div>
-                  <div class="row-line"></div>
-                  <div class="row-num">+12.4%</div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:linear-gradient(135deg,#3d2870,#7c6aad)">S</div>
+                  <div class="beiwo-name-bar" style="width:55%"></div>
+                  <div class="beiwo-status-badge asleep">😴 asleep</div>
                 </div>
-                <div class="mockup-row">
-                  <div class="row-dot" style="background:#d49de9"></div>
-                  <div class="row-line" style="background:rgba(168,85,247,0.2)"></div>
-                  <div class="row-num">+8.1%</div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:linear-gradient(135deg,#1a3a2e,#2e6b52)">M</div>
+                  <div class="beiwo-name-bar" style="width:45%"></div>
+                  <div class="beiwo-status-badge asleep">😴 asleep</div>
                 </div>
-                <div class="mockup-row">
-                  <div class="row-dot" style="background:rgba(255,255,255,0.3)"></div>
-                  <div class="row-line"></div>
-                  <div class="row-num">+3.7%</div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:linear-gradient(135deg,#2e1f5e,#5a3d9e)">L</div>
+                  <div class="beiwo-name-bar" style="width:50%"></div>
+                  <div class="beiwo-status-badge asleep">😴 asleep</div>
+                </div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:rgba(255,255,255,0.05)">J</div>
+                  <div class="beiwo-name-bar" style="width:40%"></div>
+                  <div class="beiwo-status-badge waiting">not yet</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="case-content">
-            <div class="case-tag"><span class="case-tag-dot"></span>FinTech · Mobile App</div>
-            <h3 class="case-title">FinTrack — Personal Finance Reimagined</h3>
+            <div class="case-tag"><span class="case-tag-dot"></span>Social · Sleep Habits</div>
+            <h3 class="case-title">Beiwo · 睡了么</h3>
             <p class="case-desc">
-              Redesigned a legacy finance app used by 200k+ users, reducing cognitive load and boosting daily active usage through smarter data visualization and a streamlined onboarding flow.
+              A social sleep habit app where friends virtually crawl into the same Beiwo. Seeing who is already in bed turns wind-down into a shared, playful ritual — making bedtime something to look forward to.
             </p>
             <div class="case-meta">
               <div class="meta-item">
                 <span class="meta-label">Role</span>
-                <span class="meta-value">Lead Product Designer</span>
+                <span class="meta-value">Product Designer</span>
               </div>
               <div class="meta-item">
-                <span class="meta-label">Timeline</span>
-                <span class="meta-value">5 months</span>
+                <span class="meta-label">Stage</span>
+                <span class="meta-value">0 → 1 · Ongoing</span>
               </div>
             </div>
             <div class="case-outcome">
-              <div class="outcome-pill"><span>+34%</span> DAU</div>
-              <div class="outcome-pill"><span>−42%</span> Drop-off</div>
-              <div class="outcome-pill"><span>4.8★</span> App Store</div>
+              <div class="outcome-pill"><span>Social</span> sleep UX</div>
+              <div class="outcome-pill"><span>Habit</span> design</div>
+              <div class="outcome-pill"><span>iOS</span> native</div>
             </div>
-            <a href="#contact" class="case-arrow">View case study</a>
-          </div>
-        </div>
-
-        <!-- Case 2 -->
-        <div class="case-card reveal reveal-delay-1">
-          <div class="case-visual cv-bloom">
-            <div class="case-visual-inner">
-              <div class="phone-wrap">
-                <div class="phone">
-                  <div class="bloom-header">
-                    <div>
-                      <div class="bloom-greeting">Good morning,<b>Sophia 👋</b></div>
-                    </div>
-                    <div class="bloom-avatar"></div>
-                  </div>
-                  <div class="bloom-card">
-                    <div class="bloom-card-label">Monthly streak</div>
-                    <div class="bloom-card-value">28 days</div>
-                    <div class="bloom-card-sub">🔥 Personal best — keep it up!</div>
-                  </div>
-                  <div class="bloom-pills">
-                    <div class="bloom-pill active">Today</div>
-                    <div class="bloom-pill">Week</div>
-                    <div class="bloom-pill">Month</div>
-                  </div>
-                  <div class="bloom-list-item">
-                    <div class="bli-icon">🧘</div>
-                    <div class="bli-text">
-                      <div class="bli-label">Morning meditation</div>
-                      <div class="bli-sub">10 min · 8:00 AM</div>
-                    </div>
-                    <div class="bli-val">Done</div>
-                  </div>
-                  <div class="bloom-list-item">
-                    <div class="bli-icon">🏃</div>
-                    <div class="bli-text">
-                      <div class="bli-label">Afternoon run</div>
-                      <div class="bli-sub">30 min · 5:30 PM</div>
-                    </div>
-                    <div class="bli-val" style="color:var(--purple)">Soon</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="case-content">
-            <div class="case-tag"><span class="case-tag-dot"></span>Wellness · iOS & Android</div>
-            <h3 class="case-title">Bloom — Habit Tracking for Real People</h3>
-            <p class="case-desc">
-              Designed a habit-tracking app from 0→1, balancing motivational psychology with a calming, distraction-free UI that helps users build lasting routines without overwhelm.
-            </p>
-            <div class="case-meta">
-              <div class="meta-item">
-                <span class="meta-label">Role</span>
-                <span class="meta-value">Solo Designer</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Timeline</span>
-                <span class="meta-value">3 months</span>
-              </div>
-            </div>
-            <div class="case-outcome">
-              <div class="outcome-pill"><span>50k+</span> Downloads</div>
-              <div class="outcome-pill"><span>71%</span> Retention</div>
-              <div class="outcome-pill"><span>#1</span> Health chart</div>
-            </div>
-            <a href="#contact" class="case-arrow">View case study</a>
+            <a href="beiwo.html" class="case-arrow">View case study</a>
           </div>
         </div>
 
@@ -1168,8 +1104,8 @@
 
   <!-- ── Footer ── -->
   <footer>
-    <div class="footer-name">Sophia<span>.</span></div>
-    <div class="footer-copy">© 2025 Sophia. Designed with care.</div>
+    <div class="footer-name">Sophia Xu<span>.</span></div>
+    <div class="footer-copy">© 2026 Sophia Xu. Designed with Claude Code.</div>
     <div class="footer-links">
       <a href="#hero">Top</a>
       <a href="#work">Work</a>
@@ -1231,6 +1167,19 @@
         });
       });
     });
+
+    // Equal-height case cards
+    function equalCaseCards() {
+      const cards = document.querySelectorAll('.case-card');
+      cards.forEach(c => c.style.height = '');          // reset first
+      let max = 0;
+      cards.forEach(c => max = Math.max(max, c.offsetHeight));
+      cards.forEach(c => c.style.height = max + 'px');
+    }
+    // Run after fonts + images settle
+    if (document.readyState === 'complete') { equalCaseCards(); }
+    else { window.addEventListener('load', equalCaseCards); }
+    window.addEventListener('resize', equalCaseCards);
 
     // ── Comparison slider auto-init (photos embedded) ──
     function triggerSliderSweep() {
