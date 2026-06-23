@@ -108,6 +108,15 @@
     }
     .pw-submit:hover { background: rgba(255,252,244,0.18); color: rgba(255,252,244,1); }
 
+    .pw-error-msg {
+      min-height: 14px;
+      margin-top: 10px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,150,130,0.95);
+    }
+
     .product-designer {
       font-size: clamp(13px, 1.45vw, 16px); font-weight: 500;
       letter-spacing: 0.24em; text-transform: uppercase;
@@ -145,8 +154,10 @@
       <button class="pw-btn" id="pwBtn" onclick="showForm()">Enter password to view</button>
       <form class="pw-form" id="pwForm" onsubmit="checkPw(event)">
         <input class="pw-input" id="pwInput" type="password"
-               placeholder="password" autocomplete="off" autocorrect="off" spellcheck="false"/>
-        <button type="submit" class="pw-submit">Enter →</button>
+               placeholder="password" autocomplete="off" autocorrect="off"
+               autocapitalize="none" enterkeyhint="go" spellcheck="false" required/>
+        <button type="submit" class="pw-submit" id="pwSubmit">Enter →</button>
+        <div class="pw-error-msg" id="pwError" aria-live="polite"></div>
       </form>
     </div>
 
@@ -182,6 +193,7 @@
 
     // ── Password ──
     const PW = "Bless2026";
+    const TARGET_PAGE = "./portfolio.html";
 
     function showForm() {
       document.getElementById('pwBtn').style.display = 'none';
@@ -192,22 +204,28 @@
     function checkPw(e) {
       e.preventDefault();
       const input = document.getElementById('pwInput');
-      if (input.value.trim() === PW) {
+      const submit = document.getElementById('pwSubmit');
+      const error = document.getElementById('pwError');
+      const entered = input.value.replace(/\s/g, '');
+      if (entered === PW) {
+        error.textContent = '';
+        submit.textContent = 'Opening...';
         sessionStorage.setItem('sx-auth', '1');
         ['bg','grain','vignette','stage','productDesigner','bottomTags'].forEach(id =>
           document.getElementById(id).classList.add('page-fade')
         );
-        setTimeout(() => { window.location.href = 'portfolio.html'; }, 700);
+        setTimeout(() => { window.location.assign(TARGET_PAGE); }, 500);
       } else {
         input.classList.add('error');
         input.value = '';
+        error.textContent = 'Incorrect password';
         setTimeout(() => input.classList.remove('error'), 500);
         input.focus();
       }
     }
 
     if (sessionStorage.getItem('sx-auth') === '1') {
-      window.location.replace('portfolio.html');
+      window.location.replace(TARGET_PAGE);
     }
   </script>
 </body>
