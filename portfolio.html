@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting to Sophia Xu Portfolio</title>
+  <meta http-equiv="refresh" content="0; url=./works/index.html" />
+  <link rel="canonical" href="./works/index.html" />
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #211f26;
+      background: #fdf9ff;
+    }
+    a { color: #ef5f00; }
+  </style>
+</head>
+<body>
+  <p>Redirecting to <a href="./works/index.html">Sophia Xu Portfolio</a>.</p>
+  <script>
+    const target = window.location.protocol === 'file:' ? './works/index.html' : './works/';
+    window.location.replace(target);
+  </script>
+</body>
+</html>
