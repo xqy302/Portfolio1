@@ -3,230 +3,1395 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sophia Xu — Portfolio</title>
+  <title>Sophia Xu — Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    :root {
+      /* ── Radix palette: Plum + Orange + Mauve ── */
+      --purple:    #ab4aba;   /* Plum 9  — accent, labels, rings      */
+      --purple-lt: #d49de9;   /* Plum 8  — lighter accent             */
+      --purple-xl: #fbf0fe;   /* Plum 3  — subtle accent bg           */
+      --yellow:    #f76b15;   /* Orange 9  — CTA primary              */
+      --yellow-dk: #ef5f00;   /* Orange 10 — CTA hover                */
+      --black:     #211f26;   /* Mauve 12 — primary text              */
+      --gray-1:    #3a3740;   /* Mauve 12 mid                         */
+      --gray-2:    #65636d;   /* Mauve 11 — secondary text            */
+      --gray-3:    #8e8c99;   /* Mauve 9  — muted text                */
+      --gray-4:    #dbd8e0;   /* Mauve 6  — borders                   */
+      --gray-5:    #f2eff3;   /* Mauve 3  — card / section bg         */
+      --white:     #fdfcfd;   /* Mauve 1  — page background           */
+      --font:      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font);
+      color: var(--black);
+      background: #fdf9ff;   /* Plum 2 — soft lavender page bg */
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--purple); color: var(--white); }
 
-    /* ── Layer 1: PNG background ── */
-    .bg {
-      position: fixed; inset: 0; z-index: 0;
-      background: url('images/cover-bg.png') center / cover no-repeat;
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    /* ─── Navigation ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+      transition: background 0.4s var(--ease-out), backdrop-filter 0.4s var(--ease-out), box-shadow 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+    }
+    .nav-logo {
+      font-size: 17px; font-weight: 600; letter-spacing: -0.3px;
+      color: var(--black);
+    }
+    .nav-logo span { color: var(--purple); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 14px; font-weight: 450; color: var(--gray-1);
+      transition: color 0.2s;
+      letter-spacing: -0.1px;
+    }
+    .nav-links a:hover { color: var(--purple); }
+    .nav-cta {
+      background: var(--purple); color: var(--white) !important;
+      padding: 8px 20px; border-radius: 20px; font-size: 14px !important;
+      font-weight: 500 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: #963e9f !important; transform: translateY(-1px); }
+
+    /* ─── Hero + About (combined) ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px 0 80px; position: relative; overflow: hidden;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .hero-left { display: flex; flex-direction: column; align-items: flex-start; order: 1; }
+    .hero-right { display: flex; justify-content: center; order: 0; }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(171,74,186,0.13) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 90% 80%, rgba(247,107,21,0.10) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 35% at 5% 70%, rgba(171,74,186,0.07) 0%, transparent 60%);
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .hero-statement {
+      font-family: 'Manrope', -apple-system, sans-serif;
+      font-size: clamp(24px, 2.6vw, 38px);
+      font-weight: 500; letter-spacing: -0.015em; line-height: 1.25;
+      color: #211f26; max-width: 600px;
+      opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.25s forwards;
+    }
+    .hero-statement .name-highlight {
+      background: linear-gradient(135deg, var(--purple) 0%, #c95ed4 40%, var(--yellow) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-actions {
+      margin-top: 40px; display: flex; gap: 16px; align-items: center;
+      opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.65s forwards;
+    }
+    .btn-primary {
+      background: var(--purple); color: var(--white);
+      padding: 14px 32px; border-radius: 30px;
+      font-size: 16px; font-weight: 500;
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s, background 0.2s;
+      box-shadow: 0 4px 24px rgba(171,74,186,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 36px rgba(171,74,186,0.45);
+      background: #963e9f;
+    }
+    .btn-secondary {
+      color: var(--purple); font-size: 16px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px;
+      transition: gap 0.2s;
+    }
+    .btn-secondary:hover { gap: 10px; }
+    .btn-secondary::after { content: '→'; }
+    .hero-scroll-hint {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      font-size: 12px; color: var(--gray-3); letter-spacing: 0.8px; text-transform: uppercase;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 1s var(--ease-out) 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, var(--gray-3), transparent);
+      animation: scrollAnim 2s ease-in-out infinite;
+    }
+    @keyframes scrollAnim {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.4; }
     }
 
-    /* ── Layer 2: canvas grain ── */
-    #grain {
-      position: fixed; inset: 0; z-index: 1;
+    /* ─── Section Wrapper ─── */
+    section { position: relative; z-index: 1; }
+    .section-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 48px;
+    }
+    .section-label {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(34px, 5vw, 52px); font-weight: 700;
+      letter-spacing: -0.035em; line-height: 1.1; color: var(--black);
+    }
+    .section-subtitle {
+      margin-top: 16px; font-size: 18px; color: var(--gray-2);
+      line-height: 1.6; max-width: 560px;
+    }
+
+    /* (About merged into Hero) */
+
+    /* ─── Photo Comparison Slider ─── */
+    .compare-wrap {
+      position: relative; border-radius: 28px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+      aspect-ratio: 3 / 4;
+      width: 100%; max-width: 340px;
+      margin: 0 auto;
+    }
+    .compare-slider {
+      position: relative; width: 100%; height: 100%;
+      user-select: none; cursor: ew-resize;
+      -webkit-user-select: none;
+    }
+    .compare-layer {
+      position: absolute; inset: 0; overflow: hidden;
+    }
+    .compare-layer img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      pointer-events: none; display: block;
+    }
+    /* Cartoon layer: clipped on the right, reveals from left */
+    .compare-cartoon {
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0s;
+    }
+    /* Divider line */
+    .compare-divider {
+      position: absolute; top: 0; bottom: 0;
+      left: 50%; width: 2px;
+      background: rgba(255,255,255,0.9);
+      transform: translateX(-50%);
       pointer-events: none;
-      opacity: 0.42;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    }
+    /* Drag handle */
+    .compare-handle {
+      position: absolute; top: 50%;
+      left: 50%; transform: translate(-50%, -50%);
+      width: 52px; height: 52px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 3px rgba(171,74,186,0.25);
+      cursor: ew-resize; pointer-events: all;
+      transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
+    }
+    .compare-handle:hover, .compare-slider.dragging .compare-handle {
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.3), 0 0 0 4px rgba(171,74,186,0.35);
+    }
+    .handle-icon {
+      display: flex; align-items: center; gap: 2px;
+    }
+    .handle-arrow {
+      width: 0; height: 0; border-style: solid;
+    }
+    .handle-arrow.left {
+      border-width: 5px 7px 5px 0;
+      border-color: transparent var(--purple) transparent transparent;
+    }
+    .handle-arrow.right {
+      border-width: 5px 0 5px 7px;
+      border-color: transparent transparent transparent var(--purple);
+    }
+    /* Labels */
+    .compare-label {
+      position: absolute; bottom: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--white);
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      padding: 5px 12px; border-radius: 20px;
+      pointer-events: none; transition: opacity 0.3s;
+    }
+    .compare-label-cartoon { left: 16px; }
+    .compare-label-real    { right: 16px; }
+    /* photos embedded — no upload panel needed */
+
+    /* ─── Work ─── */
+    #work { padding: 120px 0; background: var(--gray-5); }
+    .work-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 64px;
+    }
+    .work-link {
+      font-size: 15px; color: var(--purple); font-weight: 500;
+      display: flex; align-items: center; gap: 4px;
+      transition: gap 0.2s;
+      padding-bottom: 4px;
+    }
+    .work-link:hover { gap: 8px; }
+    .work-link::after { content: '→'; }
+    .case-grid {
+      display: grid; gap: 24px;
+    }
+    .case-card {
+      background: var(--white); border-radius: 24px;
+      overflow: hidden; cursor: pointer;
+      transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .case-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.12);
+    }
+    .case-card:nth-child(even) { grid-template-columns: 1fr 1fr; direction: rtl; }
+    .case-card:nth-child(even) > * { direction: ltr; }
+    .case-visual {
+      min-height: 360px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .case-visual-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* ── Layer 3: vignette ── */
-    .vignette {
-      position: fixed; inset: 0; z-index: 2; pointer-events: none;
-      background: radial-gradient(ellipse 88% 88% at 50% 50%,
-        transparent 38%, rgba(0,0,0,0.38) 100%);
+    /* Case 0 — Catherine */
+    .cv-catherine {
+      background: linear-gradient(150deg, #e3efdc 0%, #cfe1c4 55%, #b6d0a8 100%);
     }
-
-    /* ── Layer 4: content ── */
-    .stage {
-      position: fixed; inset: 0; z-index: 10;
+    /* Abstract Catherine chat mockup — essence, not literal */
+    .cathx {
+      width: 244px; height: 452px;
+      background: rgba(255,255,255,0.72);
+      border-radius: 34px; border: 1px solid rgba(255,255,255,0.9);
+      padding: 24px 20px; position: relative; overflow: hidden;
+      box-shadow: 0 22px 56px rgba(79,109,81,0.22);
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 40px 24px;
+    }
+    .cathx-head {
+      display: flex; align-items: center; gap: 11px;
+      padding-bottom: 16px; margin-bottom: 18px;
+      border-bottom: 1px solid rgba(79,109,81,0.14);
+    }
+    .cathx-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #4f6d51, #9cbf99);
+    }
+    .cathx-head-lines { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+    .cathx-bar { height: 7px; border-radius: 4px; background: rgba(47,74,51,0.30); }
+    .cathx-bar.sm { height: 6px; background: rgba(47,74,51,0.16); }
+    .cathx-bubble { border-radius: 15px; padding: 13px 13px; margin-bottom: 13px; }
+    .cathx-bubble-user {
+      width: 64%; margin-left: auto;
+      background: #4f6d51; border-bottom-right-radius: 5px;
+    }
+    .cathx-bubble-ai {
+      width: 84%; background: rgba(79,109,81,0.10);
+      border-bottom-left-radius: 5px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .cathx-line { height: 7px; border-radius: 4px; background: rgba(47,74,51,0.30); }
+    .cathx-bubble-user .cathx-line { background: rgba(255,255,255,0.7); }
+    .cathx-line.mark {
+      background: rgba(79,109,81,0.45);
+      border-bottom: 1.5px dotted rgba(79,109,81,0.85);
+      padding-bottom: 3px;
+    }
+    .cathx-mem {
+      margin-top: auto;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(79,109,81,0.18);
+      border-radius: 13px; padding: 12px 13px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .cathx-mem-label { display: flex; align-items: center; gap: 7px; }
+    .cathx-mem-dot { width: 6px; height: 6px; border-radius: 50%; background: #4f6d51; flex-shrink: 0; }
+    /* Catherine desktop window (same sage palette, desktop form factor) */
+    .cathd {
+      width: 100%; max-width: 388px; aspect-ratio: 4 / 3;
+      background: rgba(255,255,255,0.72);
+      border-radius: 18px; border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 22px 56px rgba(79,109,81,0.22);
+      display: flex; overflow: hidden;
+    }
+    .cathd-side {
+      width: 35%; padding: 16px 13px;
+      background: rgba(79,109,81,0.07);
+      border-right: 1px solid rgba(79,109,81,0.10);
+      display: flex; flex-direction: column;
+    }
+    .cathd-side-head {
+      display: flex; align-items: center; gap: 8px;
+      padding-bottom: 14px; margin-bottom: 14px;
+      border-bottom: 1px solid rgba(79,109,81,0.12);
+    }
+    .cathd-avatar {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #4f6d51, #9cbf99);
+    }
+    .cathd-side-lines { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+    .cathd-nav { display: flex; flex-direction: column; gap: 11px; }
+    .cathd-nav-item { height: 9px; border-radius: 5px; background: rgba(47,74,51,0.15); }
+    .cathd-nav-item.active { background: #4f6d51; height: 11px; }
+    .cathd-main { flex: 1; padding: 18px 16px; display: flex; flex-direction: column; }
+    .cv-catherine .cath-phone-wrap { position: relative; }
+    .cv-catherine .cath-phone {
+      width: 200px; height: 360px; background: white;
+      border-radius: 32px; box-shadow: 0 20px 60px rgba(79,109,81,0.18);
+      overflow: hidden; padding: 22px 14px 14px;
+      position: relative; display: flex; flex-direction: column;
+    }
+    .cath-header {
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px; margin-bottom: 14px;
+      border-bottom: 1px solid #e2ebdd;
+    }
+    .cath-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, #4f6d51, #9cbf99);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 12px; font-weight: 700;
+    }
+    .cath-headline { line-height: 1.2; }
+    .cath-name {
+      font-size: 11px; font-weight: 700; color: #211f26;
+      letter-spacing: -0.01em;
+    }
+    .cath-sub {
+      font-size: 7.5px; color: #8e8c99; margin-top: 2px;
+    }
+    .cath-msg {
+      font-size: 8.5px; line-height: 1.5;
+      padding: 8px 11px; border-radius: 12px;
+      margin-bottom: 8px;
+      max-width: 86%;
+    }
+    .cath-msg-user {
+      background: #4f6d51; color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+    .cath-msg-ai {
+      background: #f0f4ec; color: #211f26;
+      border-bottom-left-radius: 4px;
+    }
+    .cath-mem-mark {
+      border-bottom: 1.5px dotted #4f6d51;
+      padding-bottom: 1px;
+    }
+    .cath-mem-card {
+      margin-top: auto;
+      background: white;
+      border: 1px solid #e2ebdd;
+      border-radius: 10px;
+      padding: 8px 10px;
+      box-shadow: 0 4px 16px rgba(79,109,81,0.10);
+    }
+    .cath-mem-card-label {
+      font-size: 6.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: #4f6d51;
+      margin-bottom: 3px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .cath-mem-card-label::before {
+      content: ''; width: 5px; height: 5px;
+      border-radius: 50%; background: #4f6d51;
+    }
+    .cath-mem-card-text {
+      font-size: 8px; color: #3a3740;
+      line-height: 1.4; font-style: italic;
     }
 
-    .pre-title {
-      font-size: clamp(18px, 2.1vw, 23px); font-weight: 400;
-      letter-spacing: 0.32em; text-transform: uppercase;
-      color: rgba(255,252,244,0.96); margin-bottom: 4px;
-      opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+    /* Case 1 — FinTrack */
+    .cv-fintrack {
+      background: linear-gradient(135deg, #0F0C29, #302B63, #24243E);
     }
-
-    .name {
-      font-family: 'Ephesis', cursive;
-      font-weight: 400;
-      font-size: clamp(80px, 10vw, 130px);
-      color: rgba(255,252,244,0.96);
-      line-height: 1; letter-spacing: 0.02em;
-      text-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 3px 28px rgba(0,0,0,0.22);
-      margin-bottom: 0px;
-      opacity: 0; animation: fadeUp 1.1s cubic-bezier(0.16,1,0.3,1) 0.15s forwards;
+    .cv-fintrack .mockup {
+      width: 200px; height: 360px; background: rgba(255,255,255,0.06);
+      border-radius: 28px; border: 1px solid rgba(255,255,255,0.12);
+      padding: 20px 16px; position: relative; overflow: hidden;
     }
-
-    .post-title {
-      font-size: clamp(18px, 2.1vw, 23px); font-weight: 400;
-      letter-spacing: 0.32em; text-transform: uppercase;
-      color: rgba(255,252,244,0.96);
-      margin-top: 20px; margin-bottom: 52px;
-      opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.45s forwards;
+    .mockup-bar {
+      height: 6px; border-radius: 3px; margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--yellow) 0%, var(--purple-lt) 100%);
     }
-
-    .pw-area {
-      opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.65s forwards;
+    .mockup-bar:nth-child(2) { width: 70%; background: rgba(255,255,255,0.15); }
+    .mockup-bar:nth-child(3) { width: 50%; background: rgba(255,255,255,0.1); margin-bottom: 20px; }
+    .mockup-chart {
+      height: 90px; display: flex; align-items: flex-end; gap: 6px; margin-bottom: 16px;
     }
-
-    .pw-btn {
-      display: block;
-      width: clamp(280px, 28vw, 400px); padding: 15px 32px;
-      border: 1.5px solid rgba(255,252,244,0.75); background: rgba(255,252,244,0.06);
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(10px, 1vw, 12px); font-weight: 500;
-      letter-spacing: 0.26em; text-transform: uppercase;
-      color: rgba(255,252,244,0.96); cursor: pointer;
-      transition: background 0.25s, border-color 0.25s;
+    .chart-col {
+      flex: 1; border-radius: 4px 4px 0 0;
+      background: rgba(254,216,52,0.3);
+      transition: height 0.3s;
     }
-    .pw-btn:hover { background: rgba(255,252,244,0.14); border-color: rgba(255,252,244,1); }
-
-    .pw-form { display: none; flex-direction: column; align-items: center; }
-    .pw-form.visible { display: flex; }
-
-    .pw-input {
-      width: clamp(280px, 28vw, 400px); padding: 15px 24px;
-      border: 1.5px solid rgba(255,252,244,0.75); border-bottom: none;
-      background: rgba(255,252,244,0.12);
-      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400;
-      letter-spacing: 0.22em; color: rgba(255,252,244,0.98);
-      text-align: center; outline: none;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      transition: background 0.2s, border-color 0.2s;
+    .chart-col.active { background: var(--yellow); }
+    .mockup-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .pw-input::placeholder { color: rgba(255,252,244,0.5); letter-spacing: 0.22em; }
-    .pw-input:focus { background: rgba(255,252,244,0.18); border-color: rgba(255,252,244,1); }
-    .pw-input.error { border-color: rgba(255,100,80,0.9); animation: shake 0.35s ease; }
-
-    .pw-submit {
-      width: clamp(280px, 28vw, 400px); padding: 12px 24px;
-      border: 1.5px solid rgba(255,252,244,0.75);
-      background: rgba(255,252,244,0.08);
-      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500;
-      letter-spacing: 0.26em; text-transform: uppercase;
-      color: rgba(255,252,244,0.85); cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+    .row-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); margin-right: 8px;
+      flex-shrink: 0;
     }
-    .pw-submit:hover { background: rgba(255,252,244,0.18); color: rgba(255,252,244,1); }
+    .row-line { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.15); flex: 1; }
+    .row-num { font-size: 10px; color: rgba(255,255,255,0.5); margin-left: 8px; white-space: nowrap; }
 
-    .pw-error-msg {
-      min-height: 14px;
-      margin-top: 10px;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,150,130,0.95);
+    /* Case 2 — Beiwo */
+    .cv-beiwo {
+      background: linear-gradient(135deg, #14102f 0%, #322a6b 55%, #241f48 100%);
     }
-
-    .product-designer {
-      font-size: clamp(13px, 1.45vw, 16px); font-weight: 500;
-      letter-spacing: 0.24em; text-transform: uppercase;
-      color: rgba(255,252,244,0.96);
-      margin-top: 48px;
-      opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;
+    .beiwo-mockup {
+      width: 244px; height: 452px;
+      background: linear-gradient(160deg, rgba(255,255,255,0.20) 0%, rgba(208,196,240,0.13) 55%, rgba(150,132,200,0.14) 100%);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-radius: 34px; border: 1px solid rgba(208,196,240,0.45);
+      padding: 24px 20px; position: relative; overflow: hidden;
+      box-shadow: 0 28px 64px rgba(8,6,20,0.55), 0 0 70px rgba(140,120,200,0.28);
     }
-
-    .bottom-tags {
-      font-size: clamp(10px, 1.1vw, 12px); font-weight: 400;
-      letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(255,252,244,0.96);
-      margin-top: 20px;
-      opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.9s forwards;
+    .beiwo-mockup-glow {
+      position: absolute; top: -50px; right: -30px;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,181,232,0.22) 0%, transparent 70%);
+      pointer-events: none;
     }
+    .beiwo-top-bar {
+      height: 5px; border-radius: 3px; margin-bottom: 12px;
+      background: linear-gradient(90deg, #c4b5e8 0%, #6b4fa8 60%, rgba(196,181,232,0.2) 100%);
+    }
+    .beiwo-lbl-line {
+      height: 5px; border-radius: 3px; margin-bottom: 8px;
+      background: rgba(196,181,232,0.12);
+    }
+    .beiwo-lbl-line.short { width: 55%; margin-bottom: 20px; }
+    .beiwo-member-row {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 0; border-bottom: 1px solid rgba(196,181,232,0.06);
+    }
+    .beiwo-member-row:last-child { border-bottom: none; }
+    .beiwo-av-dot {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      border: 1px solid rgba(196,181,232,0.25);
+    }
+    .beiwo-name-bar { flex: 1; height: 6px; border-radius: 3px; background: rgba(196,181,232,0.16); }
+    .beiwo-status-badge {
+      width: 34px; height: 14px; border-radius: 8px; flex-shrink: 0;
+    }
+    .beiwo-status-badge.asleep {
+      background: rgba(109,219,139,0.22);
+      border: 1px solid rgba(109,219,139,0.35);
+    }
+    .beiwo-status-badge.waiting {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .beiwo-moon-label {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    }
+    .beiwo-moon-dot {
+      width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+      background: radial-gradient(circle at 35% 35%, #f0d28a, #d4a853);
+    }
+    .beiwo-moon-bar { width: 30%; height: 5px; border-radius: 3px; background: rgba(212,168,83,0.4); flex-shrink: 0; }
+    .beiwo-moon-line { flex: 1; height: 1px; background: rgba(212,168,83,0.18); }
 
-    .page-fade { animation: pageFade 0.7s ease forwards !important; }
-    @keyframes pageFade { to { opacity: 0; } }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes shake  { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    /* Case 3 — Nexus */
+    .cv-nexus {
+      background: linear-gradient(135deg, #F0F9FF, #E0F2FE, #BAE6FD);
+    }
+    .cv-nexus .dash-wrap {
+      width: 90%; max-width: 340px; background: white;
+      border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+      padding: 20px; overflow: hidden;
+    }
+    .dash-topbar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+    }
+    .dash-title { font-size: 12px; font-weight: 700; color: #111; }
+    .dash-badge {
+      font-size: 9px; background: #EDE9FE; color: var(--purple);
+      padding: 3px 8px; border-radius: 8px; font-weight: 600;
+    }
+    .dash-kpi-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .dash-kpi {
+      flex: 1; background: var(--gray-5); border-radius: 10px; padding: 10px 10px;
+    }
+    .dash-kpi-val { font-size: 16px; font-weight: 700; color: #111; letter-spacing: -0.5px; }
+    .dash-kpi-lbl { font-size: 8px; color: #9CA3AF; margin-top: 2px; }
+    .dash-kpi.purple { background: var(--purple); }
+    .dash-kpi.purple .dash-kpi-val { color: var(--yellow); }
+    .dash-kpi.purple .dash-kpi-lbl { color: rgba(255,255,255,0.6); }
+    .dash-chart-title { font-size: 10px; font-weight: 600; color: #111; margin-bottom: 10px; }
+    .dash-bars { display: flex; align-items: flex-end; gap: 5px; height: 60px; margin-bottom: 14px; }
+    .d-bar { flex: 1; border-radius: 4px 4px 0 0; background: #E0E7FF; }
+    .d-bar.hi { background: linear-gradient(180deg, var(--purple-lt), var(--purple)); }
+    .dash-table { width: 100%; border-collapse: collapse; }
+    .dash-table tr { border-bottom: 1px solid #F3F4F6; }
+    .dash-table td { padding: 6px 4px; font-size: 9px; color: #374151; }
+    .dash-table td:first-child { font-weight: 500; }
+    .dash-table td:last-child { text-align: right; }
+    .td-tag {
+      display: inline-block; padding: 2px 6px; border-radius: 6px; font-size: 8px; font-weight: 600;
+    }
+    .td-tag.green { background: #D1FAE5; color: #065F46; }
+    .td-tag.amber { background: #FEF3C7; color: #92400E; }
+    .td-tag.blue  { background: #DBEAFE; color: #1E40AF; }
+
+    /* Case Content */
+    .case-content {
+      padding: 56px 52px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .case-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--purple); margin-bottom: 20px;
+    }
+    .case-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--yellow); }
+    .case-title {
+      font-size: clamp(24px, 3vw, 34px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px;
+    }
+    .case-desc {
+      font-size: 16px; color: var(--gray-2); line-height: 1.7; margin-bottom: 28px;
+    }
+    .case-meta { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+    .meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .meta-label { font-size: 11px; color: var(--gray-3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .meta-value { font-size: 14px; font-weight: 600; color: var(--black); }
+    .case-outcome {
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .outcome-pill {
+      background: var(--gray-5); padding: 10px 16px; border-radius: 12px;
+      font-size: 13px; font-weight: 600; color: var(--black);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .outcome-pill span { color: var(--purple); }
+    .case-arrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--purple); font-size: 15px; font-weight: 500;
+      margin-top: 28px; transition: gap 0.2s;
+    }
+    .case-arrow:hover { gap: 12px; }
+    .case-arrow::after { content: '→'; }
+
+    /* Catherine card — sage accents (scoped) */
+    .case-card--sage .case-tag { color: #4f6d51; }
+    .case-card--sage .outcome-pill span { color: #4f6d51; }
+
+    /* Goodloop card — cobalt accents (scoped) */
+    .case-card--blue .case-tag { color: #1f44d6; }
+    .case-card--blue .outcome-pill span { color: #1f44d6; }
+    .case-card--blue .case-arrow { color: #1f44d6; }
+
+    /* Abstract Goodloop booking mockup — essence, not literal */
+    .cv-goodloop {
+      background: linear-gradient(150deg, #dbe5fb 0%, #c2d3f6 55%, #a7bff1 100%);
+    }
+    .glx {
+      width: 244px; height: 452px;
+      background: #ffffff;
+      border-radius: 34px; border: 1px solid rgba(31,68,214,0.10);
+      padding: 22px 18px; position: relative; overflow: hidden;
+      box-shadow: 0 22px 56px rgba(31,68,214,0.22);
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .glx-head {
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 14px; border-bottom: 1px solid rgba(31,68,214,0.10);
+    }
+    .glx-avatar {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #1f44d6, #3a9fe6);
+    }
+    .glx-head-lines { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .glx-bar { height: 7px; border-radius: 4px; background: rgba(31,68,214,0.16); }
+    .glx-bar.sm { height: 6px; background: rgba(30,40,60,0.12); }
+    .glx-group { display: flex; flex-direction: column; gap: 9px; }
+    .glx-step { display: flex; align-items: center; gap: 8px; }
+    .glx-step-num { width: 18px; height: 18px; border-radius: 50%; background: #1f44d6; flex-shrink: 0; }
+    .glx-kids { display: flex; gap: 10px; }
+    .glx-kid {
+      flex: 1; height: 60px; border-radius: 14px; background: #eef1f8;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .glx-kid.sel { background: #e6ecfd; border: 1.5px solid #1f44d6; }
+    .glx-kid-dot { width: 28px; height: 28px; border-radius: 50%; background: rgba(31,68,214,0.18); }
+    .glx-kid.sel .glx-kid-dot { background: linear-gradient(135deg, #1f44d6, #3a9fe6); }
+    .glx-route { background: #f4f6fb; border-radius: 14px; padding: 13px; display: flex; flex-direction: column; gap: 13px; }
+    .glx-route-row { display: flex; align-items: center; gap: 10px; }
+    .glx-pin { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .glx-pin.pickup { background: #1f44d6; }
+    .glx-pin.drop { background: #ef6c2e; }
+    .glx-cta { margin-top: auto; background: #1f44d6; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 11px; }
+    .glx-cta-bar { height: 7px; border-radius: 4px; background: rgba(255,255,255,0.38); }
+    .glx-cta-btn { height: 30px; border-radius: 16px; background: #ffffff; }
+    .case-card--sage .case-arrow { color: #4f6d51; }
+
+    /* ─── Skills ─── */
+    #skills { padding: 140px 0; }
+    .skills-intro { margin-bottom: 72px; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .skill-group {
+      background: var(--gray-5); border-radius: 24px; padding: 36px 32px;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+    }
+    .skill-group:not(.featured) {
+      background: #EAE6EC;
+    }
+    .skill-group:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+    .skill-icon {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: var(--purple-xl); display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .skill-group-title {
+      font-size: 17px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px;
+    }
+    .skill-group-sub {
+      font-size: 13px; color: var(--gray-2); margin-bottom: 24px; line-height: 1.5;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 10px;
+      background: var(--white); color: var(--gray-1); border: 1px solid var(--gray-4);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-xl); }
+    .skill-group.featured {
+      background: linear-gradient(135deg, #FFD9B8 0%, #FFB78A 100%);
+      grid-column: span 1;
+      box-shadow: 0 4px 24px rgba(247,107,21,0.08);
+    }
+    .skill-group.featured .skill-icon {
+      background: var(--purple-xl); color: var(--purple);
+    }
+    .skill-group.featured .skill-group-title { color: var(--black); }
+    .skill-group.featured .skill-group-sub { color: var(--gray-1); }
+    .skill-group.featured .skill-tag {
+      background: rgba(255,255,255,0.7); color: var(--gray-1);
+      border-color: rgba(33,31,38,0.08);
+    }
+    .skill-group.featured .skill-tag:hover {
+      background: var(--purple); color: var(--white); border-color: var(--purple);
+    }
+    .process-strip {
+      margin-top: 64px;
+      display: flex; align-items: flex-start; gap: 0;
+      background: var(--gray-5); border-radius: 24px; overflow: hidden;
+    }
+    .process-step {
+      flex: 1; padding: 36px 28px; position: relative;
+      transition: background 0.2s;
+    }
+    .process-step::after {
+      content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+      width: 1px; height: 50%; background: var(--gray-4);
+    }
+    .process-step:last-child::after { display: none; }
+    .process-step:hover { background: var(--purple-xl); }
+    .process-num {
+      font-size: 11px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.1em; margin-bottom: 12px;
+    }
+    .process-name {
+      font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em;
+    }
+    .process-desc { font-size: 13px; color: var(--gray-2); line-height: 1.55; }
+
+    /* ─── Contact ─── */
+    #contact {
+      padding: 140px 0 100px;
+      background: var(--gray-5);
+    }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px;
+    }
+    .contact-info { }
+    .contact-info p {
+      font-size: 17px; color: var(--gray-2); line-height: 1.7; margin-bottom: 40px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 15px; color: var(--gray-1); font-weight: 450;
+      padding: 16px 20px; background: var(--white); border-radius: 16px;
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s, color 0.2s;
+    }
+    .contact-link:hover {
+      transform: translateX(6px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      color: var(--purple);
+    }
+    .contact-link-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--purple-xl); display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .contact-form { }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 12px; font-weight: 600; color: var(--gray-1);
+      letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 14px 18px;
+      background: var(--white); border: 1.5px solid var(--gray-4);
+      border-radius: 14px; font-family: var(--font); font-size: 15px; color: var(--black);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(171,74,186,0.12);
+    }
+    .form-group textarea { height: 130px; }
+    .form-submit {
+      width: 100%; padding: 16px;
+      background: var(--purple); color: var(--white);
+      border: none; border-radius: 16px; font-family: var(--font);
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s, background 0.2s;
+      box-shadow: 0 4px 20px rgba(171,74,186,0.3);
+      letter-spacing: -0.01em;
+    }
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(171,74,186,0.4);
+      background: #963e9f;
+    }
+    .form-submit:active { transform: translateY(0); }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 40px 48px; background: var(--black);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-name {
+      font-size: 15px; font-weight: 600; color: var(--white); letter-spacing: -0.2px;
+    }
+    .footer-name span { color: var(--yellow); }
+    .footer-copy { font-size: 13px; color: var(--gray-3); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 13px; color: var(--gray-3); transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--yellow); }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .section-inner { padding: 0 24px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+      .hero-left { align-items: center; text-align: center; }
+      .hero-left .hero-actions { justify-content: center; }
+      .compare-wrap { max-width: 320px; }
+      .case-card { grid-template-columns: 1fr !important; direction: ltr !important; }
+      .case-visual { min-height: 260px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .process-strip { flex-direction: column; }
+      .process-step::after { display: none; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .work-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="bg" id="bg"></div>
-  <canvas id="grain"></canvas>
-  <div class="vignette" id="vignette"></div>
+  <!-- ── Nav ── -->
+  <nav id="nav">
+    <div class="nav-logo">🌻 Sophia Xu<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="#hero">About</a></li>
+      <li><a href="#work">Works</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-  <div class="stage" id="stage">
-    <div class="pre-title">Welcome to</div>
-    <div class="name">Sophia Xu's</div>
-    <div class="post-title">Portfolio</div>
+  <!-- ── Hero + About (combined) ── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="section-inner hero-inner">
 
-    <div class="pw-area">
-      <button class="pw-btn" id="pwBtn" onclick="showForm()">Enter password to view</button>
-      <form class="pw-form" id="pwForm" onsubmit="checkPw(event)">
-        <input class="pw-input" id="pwInput" type="password"
-               placeholder="password" autocomplete="off" autocorrect="off"
-               autocapitalize="none" enterkeyhint="go" spellcheck="false" required/>
-        <button type="submit" class="pw-submit" id="pwSubmit">Enter →</button>
-        <div class="pw-error-msg" id="pwError" aria-live="polite"></div>
-      </form>
+      <!-- Left: identity + bio + CTAs -->
+      <div class="hero-left">
+
+        <h1 class="hero-statement">I'm Sophia, I design products at the intersection of AI, human behavior, and real-world constraints—turning ambiguity into <span class="name-highlight">experiences people can trust</span>.</h1>
+        <div class="hero-actions">
+          <a href="#work" class="btn-primary">View my work</a>
+          <a href="#contact" class="btn-secondary">Get in touch</a>
+        </div>
+      </div>
+
+      <!-- Right: photo comparison slider -->
+      <div class="hero-right">
+        <div class="compare-wrap">
+
+          <!-- Comparison slider (photos embedded) -->
+          <div class="compare-slider" id="compareSlider">
+            <div class="compare-layer compare-real">
+              <img id="imgReal" src="images/sophia-real.webp" alt="Sophia — real photo" />
+            </div>
+            <div class="compare-layer compare-cartoon" id="compareCartoon">
+              <img id="imgCartoon" src="images/sophia-cartoon.webp" alt="Sophia — illustrated" />
+            </div>
+            <div class="compare-divider" id="compareDivider">
+              <div class="compare-handle" id="compareHandle">
+                <div class="handle-icon">
+                  <div class="handle-arrow left"></div>
+                  <div style="width:3px;height:16px;background:var(--purple);border-radius:2px;margin:0 1px"></div>
+                  <div class="handle-arrow right"></div>
+                </div>
+              </div>
+            </div>
+            <div class="compare-label compare-label-cartoon">Illustrated</div>
+            <div class="compare-label compare-label-real">Real</div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
-    <div class="product-designer" id="productDesigner">Product Designer</div>
-
-    <div class="bottom-tags" id="bottomTags">
-      Human-Centered AI &nbsp;|&nbsp; Caregiving &nbsp;|&nbsp; Multi-Sided Product Systems
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
     </div>
-  </div>
+  </section>
 
+  <!-- ── Work ── -->
+  <section id="work">
+    <div class="section-inner">
+      <div class="work-header">
+        <div>
+          <p class="section-label reveal">Selected work</p>
+          <h2 class="section-title reveal reveal-delay-1">Case studies</h2>
+        </div>
+        <a href="#contact" class="work-link reveal reveal-delay-2">All projects</a>
+      </div>
+
+      <div class="case-grid">
+
+        <!-- Case · Catherine -->
+        <div class="case-card case-card--sage reveal">
+          <div class="case-visual cv-catherine">
+            <div class="case-visual-inner">
+              <div class="cathd" role="img" aria-label="Abstract preview of the Catherine desktop app — a sidebar of caregiver tools beside a memory-aware chat reply and a 'memory in use' card">
+                <div class="cathd-side">
+                  <div class="cathd-side-head">
+                    <div class="cathd-avatar"></div>
+                    <div class="cathd-side-lines">
+                      <div class="cathx-bar" style="width:82%"></div>
+                      <div class="cathx-bar sm" style="width:54%"></div>
+                    </div>
+                  </div>
+                  <div class="cathd-nav">
+                    <div class="cathd-nav-item active" style="width:92%"></div>
+                    <div class="cathd-nav-item" style="width:74%"></div>
+                    <div class="cathd-nav-item" style="width:84%"></div>
+                    <div class="cathd-nav-item" style="width:66%"></div>
+                    <div class="cathd-nav-item" style="width:78%"></div>
+                  </div>
+                </div>
+                <div class="cathd-main">
+                  <div class="cathx-bubble cathx-bubble-user">
+                    <div class="cathx-line" style="width:78%"></div>
+                  </div>
+                  <div class="cathx-bubble cathx-bubble-ai">
+                    <div class="cathx-line" style="width:92%"></div>
+                    <div class="cathx-line mark" style="width:66%"></div>
+                    <div class="cathx-line" style="width:50%"></div>
+                  </div>
+                  <div class="cathx-mem">
+                    <div class="cathx-mem-label">
+                      <span class="cathx-mem-dot"></span>
+                      <div class="cathx-bar" style="width:44%;height:6px;background:rgba(79,109,81,0.5)"></div>
+                    </div>
+                    <div class="cathx-line" style="width:86%;background:rgba(47,74,51,0.22)"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="case-content">
+            <div class="case-tag"><span class="case-tag-dot"></span>Healthcare · AI Companion</div>
+            <h3 class="case-title">Catherine — An AI Companion for Dementia Caregivers</h3>
+            <p class="case-desc">
+              A retrospective on designing an AI companion for the moments dementia family caregivers face alone — reframing a 2022 chatbot prototype into something that remembers with care and earns trust before engagement.
+            </p>
+            <div class="case-meta">
+              <div class="meta-item">
+                <span class="meta-label">Role</span>
+                <span class="meta-value">UX Designer</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Timeline</span>
+                <span class="meta-value">2022 → 2026</span>
+              </div>
+            </div>
+            <div class="case-outcome">
+              <div class="outcome-pill"><span>Retrospective</span></div>
+              <div class="outcome-pill"><span>Memory-aware</span></div>
+              <div class="outcome-pill"><span>Trust-first</span></div>
+            </div>
+            <a href="catherine.html" class="case-arrow">View case study</a>
+          </div>
+        </div>
+
+        <!-- Case 1 -->
+        <div class="case-card reveal">
+          <div class="case-visual cv-beiwo">
+            <div class="case-visual-inner">
+              <div class="beiwo-mockup">
+                <div class="beiwo-mockup-glow"></div>
+                <div class="beiwo-top-bar"></div>
+                <div class="beiwo-lbl-line"></div>
+                <div class="beiwo-lbl-line short"></div>
+                <div class="beiwo-moon-label">
+                  <span class="beiwo-moon-dot"></span>
+                  <div class="beiwo-moon-line"></div>
+                  <div class="beiwo-moon-bar"></div>
+                </div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:linear-gradient(135deg,#3d2870,#7c6aad)"></div>
+                  <div class="beiwo-name-bar" style="width:55%"></div>
+                  <div class="beiwo-status-badge asleep"></div>
+                </div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:linear-gradient(135deg,#1a3a2e,#2e6b52)"></div>
+                  <div class="beiwo-name-bar" style="width:45%"></div>
+                  <div class="beiwo-status-badge asleep"></div>
+                </div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:linear-gradient(135deg,#2e1f5e,#5a3d9e)"></div>
+                  <div class="beiwo-name-bar" style="width:50%"></div>
+                  <div class="beiwo-status-badge asleep"></div>
+                </div>
+                <div class="beiwo-member-row">
+                  <div class="beiwo-av-dot" style="background:rgba(255,255,255,0.06)"></div>
+                  <div class="beiwo-name-bar" style="width:40%"></div>
+                  <div class="beiwo-status-badge waiting"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="case-content">
+            <div class="case-tag"><span class="case-tag-dot"></span>Social · Sleep Habits</div>
+            <h3 class="case-title">Beiwo · 睡了么</h3>
+            <p class="case-desc">
+              A social sleep habit app where friends virtually crawl into the same Beiwo. Seeing who is already in bed turns wind-down into a shared, playful ritual — making bedtime something to look forward to.
+            </p>
+            <div class="case-meta">
+              <div class="meta-item">
+                <span class="meta-label">Role</span>
+                <span class="meta-value">Product Designer</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Stage</span>
+                <span class="meta-value">0 → 1 · Ongoing</span>
+              </div>
+            </div>
+            <div class="case-outcome">
+              <div class="outcome-pill"><span>Social</span> sleep UX</div>
+              <div class="outcome-pill"><span>Habit</span> design</div>
+              <div class="outcome-pill"><span>iOS</span> native</div>
+            </div>
+            <a href="beiwo.html" class="case-arrow">View case study</a>
+          </div>
+        </div>
+
+        <!-- Case 3 · Goodloop -->
+        <div class="case-card case-card--blue reveal">
+          <div class="case-visual cv-goodloop">
+            <div class="case-visual-inner">
+              <div class="glx" role="img" aria-label="Abstract preview of the Goodloop booking flow — select a child, set the pickup and drop-off route, and review the ride">
+                <div class="glx-head">
+                  <div class="glx-avatar"></div>
+                  <div class="glx-head-lines">
+                    <div class="glx-bar" style="width:58%"></div>
+                    <div class="glx-bar sm" style="width:38%"></div>
+                  </div>
+                </div>
+                <div class="glx-group">
+                  <div class="glx-step">
+                    <span class="glx-step-num"></span>
+                    <div class="glx-bar" style="width:46%"></div>
+                  </div>
+                  <div class="glx-kids">
+                    <div class="glx-kid sel"><div class="glx-kid-dot"></div></div>
+                    <div class="glx-kid"><div class="glx-kid-dot"></div></div>
+                  </div>
+                </div>
+                <div class="glx-group">
+                  <div class="glx-step">
+                    <span class="glx-step-num"></span>
+                    <div class="glx-bar" style="width:40%"></div>
+                  </div>
+                  <div class="glx-route">
+                    <div class="glx-route-row"><span class="glx-pin pickup"></span><div class="glx-bar" style="width:72%"></div></div>
+                    <div class="glx-route-row"><span class="glx-pin drop"></span><div class="glx-bar sm" style="width:56%"></div></div>
+                  </div>
+                </div>
+                <div class="glx-cta">
+                  <div class="glx-cta-bar" style="width:50%"></div>
+                  <div class="glx-cta-btn"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="case-content">
+            <div class="case-tag"><span class="case-tag-dot"></span>Mobility · Kids Carpool</div>
+            <h3 class="case-title">Goodloop — A Kids Carpool App</h3>
+            <p class="case-desc">
+              Led the 0→1 design of a kids carpool app — letting parents schedule safe journeys with verified drivers, manage their family network, and track every trip door-to-door. An unshipped MVP shaped by research with 20 families.
+            </p>
+            <div class="case-meta">
+              <div class="meta-item">
+                <span class="meta-label">Role</span>
+                <span class="meta-value">Product Designer</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Timeline</span>
+                <span class="meta-value">2025 → Present</span>
+              </div>
+            </div>
+            <div class="case-outcome">
+              <div class="outcome-pill"><span>0 → 1</span> MVP</div>
+              <div class="outcome-pill"><span>20</span> families researched</div>
+              <div class="outcome-pill"><span>5</span> core flows</div>
+            </div>
+            <a href="#contact" class="case-arrow">View case study</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Skills ── -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="skills-intro">
+        <p class="section-label reveal">Skills</p>
+        <h2 class="section-title reveal reveal-delay-1">Design, strategy<br>& everything between</h2>
+        <p class="section-subtitle reveal reveal-delay-2">
+          From early discovery through polished delivery — I bring a full-stack design approach to every project I touch.
+        </p>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-group featured reveal">
+          <div class="skill-icon">✦</div>
+          <div class="skill-group-title">Product Design</div>
+          <div class="skill-group-sub">End-to-end product design across mobile, web, and emerging platforms.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">UX Design</span>
+            <span class="skill-tag">UI Design</span>
+            <span class="skill-tag">Systems Design</span>
+            <span class="skill-tag">Prototyping</span>
+            <span class="skill-tag">Design Tokens</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal reveal-delay-1">
+          <div class="skill-icon">🔍</div>
+          <div class="skill-group-title">Research & Strategy</div>
+          <div class="skill-group-sub">Grounding every design decision in real user insight and business goals.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">User Interviews</span>
+            <span class="skill-tag">Usability Testing</span>
+            <span class="skill-tag">Journey Mapping</span>
+            <span class="skill-tag">Competitive Analysis</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal reveal-delay-2">
+          <div class="skill-icon">🛠</div>
+          <div class="skill-group-title">Tools & Craft</div>
+          <div class="skill-group-sub">A sharp toolkit for every phase of the design process.</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Framer</span>
+            <span class="skill-tag">Principle</span>
+            <span class="skill-tag">Maze</span>
+            <span class="skill-tag">Notion</span>
+            <span class="skill-tag">HTML/CSS</span>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section id="contact">
+    <div class="section-inner">
+      <p class="section-label reveal">Contact</p>
+      <h2 class="section-title reveal reveal-delay-1">Let's create something<br>remarkable together</h2>
+      <div class="contact-grid">
+        <div class="contact-info reveal reveal-delay-2">
+          <p>
+            Whether you have a product to build, a design challenge to solve, or just want to talk shop — my inbox is always open.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:xqy302@gmail.com" class="contact-link">
+              <div class="contact-link-icon">✉️</div>
+              xqy302@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/qingyang-sophia-xu/" target="_blank" rel="noopener" class="contact-link">
+              <div class="contact-link-icon">💼</div>
+              linkedin.com/in/qingyang-sophia-xu
+            </a>
+            <a href="Sophia_Xu_Resume.pdf" target="_blank" rel="noopener" class="contact-link">
+              <div class="contact-link-icon">📄</div>
+              Download résumé
+            </a>
+          </div>
+        </div>
+        <div class="contact-form reveal reveal-delay-3">
+          <form onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <label for="name">Your name</label>
+              <input type="text" id="name" placeholder="Jane Smith" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" id="email" placeholder="jane@company.com" />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" placeholder="Tell me about your project…"></textarea>
+            </div>
+            <button type="submit" class="form-submit" id="submit-btn">Send message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-name">Sophia Xu<span>.</span></div>
+    <div class="footer-copy">© 2026 Sophia Xu. Designed with Claude Code.</div>
+    <div class="footer-links">
+      <a href="#hero">Top</a>
+      <a href="#work">Works</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+
+  <!-- ── JS ── -->
   <script>
-    // ── Canvas grain ──
-    const canvas = document.getElementById('grain');
-    const ctx    = canvas.getContext('2d');
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    });
 
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
 
-    function drawGrain() {
-      const w = canvas.width, h = canvas.height;
-      const img = ctx.createImageData(w, h);
-      const d = img.data;
-      for (let i = 0; i < d.length; i += 4) {
-        const v = (Math.random() * 255) | 0;
-        d[i] = d[i+1] = d[i+2] = v;
-        d[i+3] = 36;
-      }
-      ctx.putImageData(img, 0, 0);
-      requestAnimationFrame(drawGrain);
-    }
-    drawGrain();
-
-    // ── Password ──
-    const PW = "bless2026";
-    const TARGET_PAGE = window.location.protocol === 'file:' ? './works/index.html' : './works/';
-
-    function showForm() {
-      document.getElementById('pwBtn').style.display = 'none';
-      document.getElementById('pwForm').classList.add('visible');
-      setTimeout(() => document.getElementById('pwInput').focus(), 40);
-    }
-
-    function checkPw(e) {
+    // Form submit
+    function handleSubmit(e) {
       e.preventDefault();
-      const input = document.getElementById('pwInput');
-      const submit = document.getElementById('pwSubmit');
-      const error = document.getElementById('pwError');
-      const entered = input.value.normalize('NFKC').replace(/\s/g, '').toLowerCase();
-      if (entered === PW) {
-        error.textContent = '';
-        submit.textContent = 'Opening...';
-        sessionStorage.setItem('sx-auth', '1');
-        ['bg','grain','vignette','stage','productDesigner','bottomTags'].forEach(id =>
-          document.getElementById(id).classList.add('page-fade')
-        );
-        setTimeout(() => { window.location.assign(TARGET_PAGE); }, 500);
-      } else {
-        input.classList.add('error');
-        input.value = '';
-        error.textContent = 'Incorrect password';
-        setTimeout(() => input.classList.remove('error'), 500);
-        input.focus();
-      }
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = '✓ Message sent!';
+      btn.style.background = '#10B981';
+      btn.style.boxShadow = '0 4px 20px rgba(16,185,129,0.3)';
+      setTimeout(() => {
+        btn.textContent = 'Send message →';
+        btn.style.background = '';
+        btn.style.boxShadow = '';
+        e.target.reset();
+      }, 3000);
     }
 
-    if (sessionStorage.getItem('sx-auth') === '1') {
-      window.location.replace(TARGET_PAGE);
+    // Subtle parallax on hero
+    window.addEventListener('scroll', () => {
+      const hero = document.getElementById('hero');
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        hero.style.transform = `translateY(${y * 0.25}px)`;
+      }
+    });
+
+    // Animate chart columns on hover
+    document.querySelectorAll('.case-card').forEach(card => {
+      const cols = card.querySelectorAll('.chart-col');
+      card.addEventListener('mouseenter', () => {
+        cols.forEach(col => {
+          const rand = 30 + Math.random() * 65;
+          col.style.height = rand + '%';
+        });
+      });
+    });
+
+    // Equal-height case cards
+    function equalCaseCards() {
+      const cards = document.querySelectorAll('.case-card');
+      cards.forEach(c => c.style.height = '');          // reset first
+      let max = 0;
+      cards.forEach(c => max = Math.max(max, c.offsetHeight));
+      cards.forEach(c => c.style.height = max + 'px');
     }
+    // Run after fonts + images settle
+    if (document.readyState === 'complete') { equalCaseCards(); }
+    else { window.addEventListener('load', equalCaseCards); }
+    window.addEventListener('resize', equalCaseCards);
+
+    // ── Comparison slider auto-init (photos embedded) ──
+    function triggerSliderSweep() {
+      const cartoon = document.getElementById('compareCartoon');
+      const divider = document.getElementById('compareDivider');
+      let p = 98;
+      cartoon.style.clipPath = `inset(0 ${100 - p}% 0 0)`;
+      divider.style.left = p + '%';
+      const sweep = setInterval(() => {
+        p -= 2.4;
+        if (p <= 50) { p = 50; clearInterval(sweep); }
+        cartoon.style.clipPath = `inset(0 ${(100 - p).toFixed(1)}% 0 0)`;
+        divider.style.left = p.toFixed(1) + '%';
+      }, 16);
+    }
+
+    // Trigger sweep when slider scrolls into view
+    const sliderObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { triggerSliderSweep(); sliderObserver.disconnect(); } });
+    }, { threshold: 0.3 });
+    const sliderEl = document.getElementById('compareSlider');
+    if (sliderEl) sliderObserver.observe(sliderEl);
+
+    // ── Photo Comparison Slider ──
+    (function () {
+      const slider   = document.getElementById('compareSlider');
+      const cartoon  = document.getElementById('compareCartoon');
+      const divider  = document.getElementById('compareDivider');
+
+      if (!slider) return;
+
+      let pct = 50;   // 0–100; position of the dividing line
+      let dragging = false;
+
+      function applyPosition(x) {
+        const rect = slider.getBoundingClientRect();
+        pct = Math.max(2, Math.min(98, ((x - rect.left) / rect.width) * 100));
+        // Cartoon is clipped from the right; as pct decreases, right clip grows → cartoon shrinks (left side)
+        cartoon.style.clipPath  = `inset(0 ${(100 - pct).toFixed(2)}% 0 0)`;
+        divider.style.left      = pct.toFixed(2) + '%';
+      }
+
+      // ── Mouse ──
+      slider.addEventListener('mousedown', e => {
+        dragging = true;
+        slider.classList.add('dragging');
+        applyPosition(e.clientX);
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', e => {
+        if (dragging) applyPosition(e.clientX);
+      });
+      window.addEventListener('mouseup', () => {
+        dragging = false;
+        slider.classList.remove('dragging');
+      });
+
+      // ── Touch ──
+      slider.addEventListener('touchstart', e => {
+        dragging = true;
+        applyPosition(e.touches[0].clientX);
+        e.preventDefault();
+      }, { passive: false });
+      window.addEventListener('touchmove', e => {
+        if (dragging) applyPosition(e.touches[0].clientX);
+      }, { passive: false });
+      window.addEventListener('touchend', () => { dragging = false; });
+
+      // ── Keyboard accessibility ──
+      slider.setAttribute('tabindex', '0');
+      slider.setAttribute('role', 'slider');
+      slider.setAttribute('aria-label', 'Photo comparison — drag to reveal');
+      slider.addEventListener('keydown', e => {
+        const step = 5;
+        if (e.key === 'ArrowLeft')  { pct = Math.max(2,  pct - step); }
+        if (e.key === 'ArrowRight') { pct = Math.min(98, pct + step); }
+        cartoon.style.clipPath = `inset(0 ${(100 - pct).toFixed(2)}% 0 0)`;
+        divider.style.left     = pct.toFixed(2) + '%';
+      });
+
+      // Sweep is triggered by ucApply once both images are loaded
+    })();
   </script>
 </body>
 </html>
